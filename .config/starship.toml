@@ -1,0 +1,44 @@
+[hostname]
+ssh_only = false
+format = "[lukemiloszewski](bold red) "
+disabled = false
+
+[directory]
+format = "at 🚀 [$path]($style)[$read_only]($read_only_style) "
+truncate_to_repo = true  # truncate to root of git repository
+truncation_length = 3  # number of parent folders current directory will be truncated to
+truncation_symbol = ""
+
+[git_branch]
+symbol = "🌱 "
+truncation_length = 20
+truncation_symbol = "..."
+
+[git_commit]
+only_detached = false
+commit_hash_length = 7
+tag_symbol = "🔖 "
+tag_disabled = false
+
+[battery]
+full_symbol = "🔋 "
+charging_symbol = "⚡️ "
+discharging_symbol = "💀 "
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+[line_break]
+disabled = false
+
+[package]
+disabled = true
+
+[python]
+python_binary = "python"
+
+[time]
+disabled = false
+time_format = "%R"
+format = '[$time]($style) '
