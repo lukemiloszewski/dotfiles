@@ -45,6 +45,7 @@ brew install --cask todoist
 brew install --cask visual-studio-code
 brew install --cask vlc
 brew install --cask zoom
+brew install --cask raycast
 
 # --- Setup ---
 
