@@ -27,6 +27,10 @@ brew install readline
 brew install sqlite3
 brew install xz
 brew install zlib
+brew install pyenv
+brew install poetry
+brew install pipx
+brew install starship
 
 # --- Cask ---
 
