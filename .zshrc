@@ -1,6 +1,6 @@
 # --- Dotfiles ---
 
-for file in ~/.dotfiles/.{aliases,functions,exports}; do
+for file in ~/dotfiles/.{aliases,functions,exports,macos}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
