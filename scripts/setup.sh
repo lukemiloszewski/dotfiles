@@ -35,6 +35,9 @@ source ~/dotfiles/scripts/brew.sh
 # setup SSH key with GitHub
 source ~/dotfiles/scripts/ssh.sh
 
+# configure macOS defaults
+source ~/dotfiles/.macos
+
 # install oh-my-zsh (creating `~/.oh-my-zsh` and `~/.zshrc`)
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
