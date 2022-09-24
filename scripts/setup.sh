@@ -29,10 +29,13 @@ ln -s "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
 # install Homebrew
 /bin/bash -c "$(curl -fsSL <https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh>)"
 
-# install packages with Homebrew
+# install system packages with Homebrew
 source ~/dotfiles/scripts/brew.sh
 
-# setup SSH key with GitHub
+# install python packages with pipx
+source ~/dotfiles/scripts/python.sh
+
+# configure SSH key with GitHub
 source ~/dotfiles/scripts/ssh.sh
 
 # configure macOS defaults

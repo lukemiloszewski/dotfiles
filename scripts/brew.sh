@@ -21,7 +21,6 @@ brew install git-lfs
 brew install ssh-copy-id
 brew install tree
 brew install postgresql
-brew install rich-cli
 brew install openssl
 brew install readline
 brew install sqlite3
