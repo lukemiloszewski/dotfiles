@@ -30,6 +30,7 @@ brew install pyenv
 brew install poetry
 brew install pipx
 brew install starship
+brew install stats
 
 # --- Cask ---
 
