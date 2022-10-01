@@ -23,6 +23,7 @@ ln -s "${HOME}/dotfiles/.functions" "${HOME}/.functions"
 ln -s "${HOME}/dotfiles/.gitconfig" "${HOME}/.gitconfig"
 ln -s "${HOME}/dotfiles/.macos" "${HOME}/.macos"
 ln -s "${HOME}/dotfiles/.nvm" "${HOME}/.nvm"
+ln -s "${HOME}/dotfiles/.pyflyby" "${HOME}/.pyflyby"
 ln -s "${HOME}/dotfiles/.zprofile" "${HOME}/.zprofile"
 ln -s "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
 
