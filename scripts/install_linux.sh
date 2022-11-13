@@ -26,5 +26,3 @@ ln -sf "${HOME}/dotfiles/.gitconfig" "${HOME}/.gitconfig"
 ln -sf "${HOME}/dotfiles/.nvm" "${HOME}/.nvm"
 ln -sf "${HOME}/dotfiles/.pyflyby" "${HOME}/.pyflyby"
 ln -sf "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
-
-exec zsh
