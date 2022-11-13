@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 # install system packages with apt
 source "${HOME}/dotfiles/scripts/apt.sh"
 
