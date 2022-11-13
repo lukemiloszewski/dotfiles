@@ -23,9 +23,19 @@
         "terminal.integrated.defaultProfile.linux": "zsh",
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.languageServer": "Default",
-        "dev.containers.copyGitConfig": false
+        "dev.containers.copyGitConfig": false,
+				"python.linting.enabled": true,
+				"python.linting.banditPath": "/usr/local/pipx/bin/bandit",
+				"python.linting.flake8Path": "/usr/local/pipx/bin/flake8",
+				"python.linting.mypyPath": "/usr/local/pipx/bin/mypy",
+				"python.linting.pydocstylePath": "/usr/local/pipx/bin/pydocstyle",
+        "editor.formatOnSave": true,
+        "python.formatting.provider": "black",
+				"python.formatting.blackPath": "/usr/local/pipx/bin/black",
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": true
+        }
       },
-
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
@@ -36,5 +46,6 @@
       ]
     }
   },
-  "postCreateCommand": "./.devcontainer/post-create.sh > ~/post-create.log"
+  "postCreateCommand": ""
+  // "postCreateCommand": "./.devcontainer/post-create.sh > ~/post-create.log"
 }
