@@ -1,5 +1,5 @@
 <h1 align="center">Dotfiles</h1>
-<p align="center">Sensible defaults for macOS ⚡️</p>
+<p align="center">Sensible defaults for development ⚡️</p>
 
 ## Installation
 
