@@ -27,6 +27,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PYTHONIOENCODING='UTF-8';
 export IPYTHONDIR=$HOME/.ipython;
 export PYFLYBY_PATH=$HOME/.pyflyby;
+export PIPX_HOME=/usr/local/pipx  # TODO: change to $HOME/.local/pipx
+export PIPX_BIN_DIR=/usr/local/pipx/bin # TODO: change to $HOME/.local/pipx/bin
+export PATH="${PATH}:${PIPX_BIN_DIR}"
 
 # --- Node ---
 
