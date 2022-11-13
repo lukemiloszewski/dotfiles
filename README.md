@@ -4,5 +4,11 @@
 ## Installation
 
 ```shell
-curl https://raw.githubusercontent.com/lukemiloszewski/dotfiles/HEAD/scripts/setup.sh | zsh
+git clone https://github.com/lukemiloszewski/dotfiles.git "${HOME}/dotfiles"
+
+# for macos
+"${HOME}/dotfiles/scripts/install_macos.sh" | zsh
+
+# for linux
+"${HOME}/dotfiles/scripts/install_linux.sh" | zsh
 ```
