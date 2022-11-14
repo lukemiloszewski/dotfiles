@@ -3,8 +3,8 @@
 files=(.aliases .exports .functions)
 
 for file ($files); do
-	if [[ -f "/workspaces/dotfiles/$file" ]]; then
-		source "/workspaces/dotfiles/$file"
+	if [[ -f "$HOME/$file" ]]; then
+		source "$HOME/$file"
 	fi
 done
 unset file

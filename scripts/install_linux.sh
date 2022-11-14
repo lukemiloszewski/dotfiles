@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export DEBIAN_FRONTEND=noninteractive
-
 # install system packages with apt
 source "${HOME}/dotfiles/scripts/apt.sh"
 
@@ -9,7 +7,7 @@ source "${HOME}/dotfiles/scripts/apt.sh"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
 # install oh-my-zsh (creating `~/.oh-my-zsh` and `~/.zshrc`)
-bash -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # install zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -30,5 +28,3 @@ ln -sf "${HOME}/dotfiles/.gitconfig" "${HOME}/.gitconfig"
 ln -sf "${HOME}/dotfiles/.nvm" "${HOME}/.nvm"
 ln -sf "${HOME}/dotfiles/.pyflyby" "${HOME}/.pyflyby"
 ln -sf "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
-
-export DEBIAN_FRONTEND=dialog
