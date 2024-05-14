@@ -1,0 +1,19 @@
+matches:
+  - trigger: ":md-note"
+    replace: |
+      ## $|$
+      
+      - metadata: {{mydate}} ({{mytime}}),
+      - description: ...
+      
+      ---
+
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+      - name: mytime
+        type: date
+        params:
+          format: "%H:%M:%S"
