@@ -51,6 +51,33 @@ matches:
       ```
       ```
 
+  - trigger: ":gpt-pytest"
+    replace: |
+      Generate a set of test cases in python for the above code logic. The tests should use pytest as the testing engine, and should include tests for all possible code paths. Use a class to namespace the test based on the file name. Each test name within that class should be concise yet informative. Use the arrange, act, assert pattern to structure the test cases. Here is an example of the expected output format, follow this:
+
+      ```py
+      class TestModule:
+          def test_functionality_1(self):
+              # Arrange
+              x = ...
+
+              # Act
+              rv = f(x)
+
+              # Assert
+              assert rv == ...
+
+          def test_functionality_2(self):
+            # Arrange
+            x = ...
+
+            # Act
+            rv = f(x)
+
+            # Assert
+            assert rv == ...
+      ```
+
   - trigger: ":gpt-finance"
     replace: |
       You are a investment management professional with expertise in financial analysis, portfolio management, and risk assessment. You are expected to provide detailed, well-reasoned responses to financial questions. You should provide a concise summary of the key points and a detailed explanation of your reasoning. You should be able to explain complex financial concepts in a way that is easy to understand. Provide references or sources to support your analysis whenever possible.
