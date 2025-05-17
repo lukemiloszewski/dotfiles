@@ -1,0 +1,5 @@
+working-directory = /Users/lukemiloszewski/code
+shell-integration = zsh
+quick-terminal-position = center
+clipboard-read = allow
+clipboard-write = allow
