@@ -7,51 +7,20 @@ unset file;
 
 # --- Keybindings ---
 
-# === Selection Functions ===
-# Main function to enable selection and movement
-select-and-move() {
-  ((REGION_ACTIVE)) || zle set-mark-command
-  zle $1
-}
+move-backward-char() { zle backward-char }
+move-forward-char()  { zle forward-char }
+zle -N move-backward-char
+zle -N move-forward-char
 
-# === Widget Definitions ===
-# Word and line level selection widgets
 for cmd in backward-word forward-word beginning-of-line end-of-line; do
-  eval "select-and-$cmd() { select-and-move $cmd }"
-  zle -N select-and-$cmd
+  eval "move-$cmd() { zle $cmd }"
+  zle -N move-$cmd
 done
 
-# Character-by-character selection widgets
-select-and-backward-char() { select-and-move backward-char }
-select-and-forward-char() { select-and-move forward-char }
-zle -N select-and-backward-char
-zle -N select-and-forward-char
-
-# === Selection Deletion Widget ===
-# Widget to handle deleting selected text
-delete-selection() {
-  if ((REGION_ACTIVE)); then
-    # Delete the selected region
-    zle kill-region
-  else
-    # Normal character deletion
-    zle delete-char
-  fi
-}
-zle -N delete-selection
-
-# === Key Bindings ===
-# Character selection (Shift + Arrow)
-bindkey $'\e[1;2D' select-and-backward-char     # Shift+Left
-bindkey $'\e[1;2C' select-and-forward-char      # Shift+Right
-
-# Line selection (Shift + Home/End)
-bindkey $'\e[1;2H' select-and-beginning-of-line # Shift+Home
-bindkey $'\e[1;2F' select-and-end-of-line       # Shift+End
-
-# Selection management
-bindkey $'\e' deactivate-region                 # Escape to cancel selection
-bindkey "^?" delete-selection                   # Backspace to delete selection
+bindkey $'\e[1;2D' move-backward-char        # Shift+Left
+bindkey $'\e[1;2C' move-forward-char         # Shift+Right
+bindkey $'\e[1;2H' move-beginning-of-line    # Shift+Home
+bindkey $'\e[1;2F' move-end-of-line          # Shift+End
 
 # --- Autocomplete ---
 
