@@ -9,18 +9,14 @@ brew upgrade
 
 brew install moreutils
 brew install findutils
-brew install gnu-sed
 brew install wget
 brew install vim
 brew install grep
 brew install openssh
 brew install make
-brew install ack
 brew install ssh-copy-id
 brew install openssl
 brew install readline
-brew install xz
-brew install zlib
 brew install stats
 brew install tree
 brew install postgresql
