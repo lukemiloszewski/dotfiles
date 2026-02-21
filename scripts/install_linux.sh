@@ -2,9 +2,6 @@
 
 mkdir -p "${HOME}/code"
 
-# install packages (zsh and dev tools)
-sudo bash "${HOME}/code/dotfiles/scripts/apt.sh"
-
 # install starship prompt (user-local, no sudo required)
 curl -sS https://starship.rs/install.sh | sh -s -- -y --bin-dir ~/.local/bin
 
