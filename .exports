@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 
-# --- Warnings ---
-
-export BASH_SILENCE_DEPRECATION_WARNING=1;
-
 ### --- Editor ---
 
 export EDITOR='vim';
@@ -11,8 +7,6 @@ export EDITOR='vim';
 # --- Terminal ---
 
 export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
-export HISTCONTROL='ignoreboth';  # omit duplicates and spaces
 export KEYTIMEOUT=1
 export REPORTTIME=10
 
@@ -25,13 +19,11 @@ export LC_ALL='en_US.UTF-8';
 
 export PATH="$HOME/.local/bin:$PATH"
 export PYTHONIOENCODING='UTF-8';
-export PATH="${PATH}:${PIPX_BIN_DIR}"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 
 # --- Node ---
 
 export NVM_DIR="$HOME/.nvm"
+export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # --- ZSH ---
 

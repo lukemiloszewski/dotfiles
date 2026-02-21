@@ -21,13 +21,13 @@ plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
-# --- Python ---
+# --- Rust ---
 
-eval "$(pyenv init -)"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # --- Node ---
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # --- Starship ---
 

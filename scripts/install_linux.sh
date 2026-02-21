@@ -26,9 +26,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 # set zsh as default shell
 chsh -s $(which zsh)
 
-cp -r "${HOME}/code/dotfiles/.aliases" "${HOME}/.aliases"
-cp -r "${HOME}/code/dotfiles/.ansible.cfg" "${HOME}/.ansible.cfg"
-cp -r "${HOME}/code/dotfiles/.config" "${HOME}/.config"
-cp -r "${HOME}/code/dotfiles/.exports" "${HOME}/.exports"
-cp -r "${HOME}/code/dotfiles/.gitconfig" "${HOME}/.gitconfig"
-cp -r "${HOME}/code/dotfiles/.zshrc" "${HOME}/.zshrc"
+ln -sf "${HOME}/code/dotfiles/.aliases"     "${HOME}/.aliases"
+ln -sf "${HOME}/code/dotfiles/.ansible.cfg" "${HOME}/.ansible.cfg"
+ln -sf "${HOME}/code/dotfiles/.config"      "${HOME}/.config"
+ln -sf "${HOME}/code/dotfiles/.exports"     "${HOME}/.exports"
+ln -sf "${HOME}/code/dotfiles/.gitconfig"   "${HOME}/.gitconfig"
+ln -sf "${HOME}/code/dotfiles/.zshrc_linux" "${HOME}/.zshrc"
