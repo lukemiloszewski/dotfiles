@@ -21,7 +21,20 @@ packages="zsh \
     ca-certificates \
     zip \
     unzip \
-    less"
+    less \
+    tar \
+    tmux \
+    gcc \
+    gcc-c++ \
+    bzip2 \
+    bzip2-devel \
+    libffi-devel \
+    openssl-devel \
+    readline-devel \
+    unixODBC-devel \
+    xz \
+    zlib-devel \
+    '@Development Tools'"
 
 export DEBIAN_FRONTEND=noninteractive
 
