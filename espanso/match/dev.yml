@@ -17,3 +17,42 @@ matches:
         type: date
         params:
           format: "%H:%M:%S"
+
+  - trigger: ":todo"
+    replace: "# TODO(LM, {{mydate}}):"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ":note"
+    replace: |
+      ## | {{year}}:{{month}}:{{day}}_{{hour}}:{{minute}}:{{second}} [#91]
+      
+      
+    vars:
+      - name: year
+        type: date
+        params:
+          format: "%Y"
+      - name: month
+        type: date
+        params:
+          format: "%m"
+      - name: day
+        type: date
+        params:
+          format: "%d"
+      - name: hour
+        type: date
+        params:
+          format: "%H"
+      - name: minute
+        type: date
+        params:
+          format: "%M"
+      - name: second
+        type: date
+        params:
+          format: "%S"

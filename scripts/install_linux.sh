@@ -3,9 +3,6 @@
 # install starship prompt
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-# install pyenv
-curl https://pyenv.run | bash
-
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
