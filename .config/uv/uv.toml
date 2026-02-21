@@ -1,0 +1,3 @@
+index-url = "https://nexus.ny1.ninetyone.com/repository/pypy-all/simple"
+native-tls = true
+allow-insecure-host = ["nexus.ny1.ninetyone.com"]

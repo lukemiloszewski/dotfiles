@@ -1,51 +1,53 @@
 [user]
- 	name          = Luke Miloszewski
- 	email         = lukemiloszewski@gmail.com
+name 	 	 	 = Luke Miloszewski
+email 	 	 	 = lukemiloszewski@gmail.com
 
 [github]
-	user          = lukemiloszewski
+user 	 	 	 = lukemiloszewski
 
 [init]
-	defaultBranch = main
+defaultBranch    = main
 
 [core]
-	pager         = cat
-	editor        = code --wait
+pager 	 	 	 = cat
+editor 	 	 	 = code --wait
+autocrlf = true
 
 [color]
- 	ui            = auto
+ui 	 	 	 	 = auto
 
 [color "branch"]
- 	upstream      = cyan
+upstream 	 	 = cyan
 
 [log]
- 	abbrevCommit  = true
- 	follow        = true
- 	decorate      = false
+abbrevCommit 	 = true
+follow 	 	   	 = true
+decorate 	 	 = false
 
 [tag]
-	sort          = version:refname
+sort 	 	 	 = version:refname
 
 [alias]
-	aliases       = !git config --get-regexp alias | sed -re 's/alias\\.(\\S*)\\s(.*)$/\\1 = \\2/g'
-	a             = add
-	cm            = commit -m
-	s             = status
-	p             = push
-	pom           = push -u origin main
-	puom          = pull origin main
- 	co            = checkout
-	cob           = checkout -b
-	fp            = fetch --prune --all	
-	lg            = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
-	reword        = commit --amend
-	uncommit      = reset --soft HEAD~1
-	untrack       = rm --cache --
-	stat          = !git --no-pager diff --stat
-	sweep         = !git branch --merged master | grep -v 'master$' | xargs git branch -d && git remote prune origin
+aliases 	 	 = !git config --get-regexp alias | sed -re 's/alias\\.(\\S*)\\s(.*)$/\\1 = \\2/g'
+a 	 	 	 	 = add
+cm 	 	 	 	 = commit -m
+s 	 	 	 	 = status
+p 	 	 	 	 = push
+pom 	 	 	 = push -u origin main
+puom 	 	 	 = pull origin main
+co 	 	 	 	 = checkout
+cob 	 	 	 = checkout -b
+fp 	 	 	 	 = fetch --prune --all 
+lg 	 	 	 	 = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset'
+reword 	 	 	 = commit --amend
+uncommit 	 	 = reset --soft HEAD~1
+untrack 	 	 = rm --cache --
+stat 	 	 	 = !git --no-pager diff --stat
+sweep 	 	 	 = !git branch --merged master | grep -v 'master$' | xargs git branch -d && git remote prune origin
 
 [pull]
-	rebase        = false
+rebase 	 	 	 = false
+ff               = only
 
 [pretty]
-    custom        = "%C(magenta)%h %C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"  # , hash, decorations, date, message, author name
+custom 	 	 	 = "%C(magenta)%h %C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)" 	# , hash, decorations, date, message, author name
