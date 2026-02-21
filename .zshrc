@@ -1,24 +1,26 @@
 # --- Dotfiles ---
 
-for file in ~/dotfiles/.{aliases,functions,exports}; do
+for file in "$HOME"/code/dotfiles/.{aliases,functions,exports}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
 # --- Keybindings ---
 
-bindkey "[D" backward-word
-bindkey "^[[1;5D" backward-word                     # [Ctrl-left] - backward one word
-bindkey '^[^[[D' backward-word                      # [Ctrl-left] - backward one word
-bindkey "[C" forward-word
-bindkey "^[[1;5C" forward-word                      # [Ctrl-right] - forward one word
-bindkey '^[^[[C' forward-word                       # [Ctrl-right] - forward one word
-bindkey "^[a" beginning-of-line
-bindkey '^[[1;3D' beginning-of-line                 # [Alt-left] - beginning of line
-bindkey '^[[5D' beginning-of-line                   # [Alt-left] - beginning of line
-bindkey "^[e" end-of-line
-bindkey '^[[1;3C' end-of-line                       # [Alt-right] - end of line
-bindkey '^[[5C' end-of-line                         # [Alt-right] - end of line
+move-backward-char() { zle backward-char }
+move-forward-char()  { zle forward-char }
+zle -N move-backward-char
+zle -N move-forward-char
+
+for cmd in backward-word forward-word beginning-of-line end-of-line; do
+  eval "move-$cmd() { zle $cmd }"
+  zle -N move-$cmd
+done
+
+bindkey $'\e[1;2D' move-backward-char        # Shift+Left
+bindkey $'\e[1;2C' move-forward-char         # Shift+Right
+bindkey $'\e[1;2H' move-beginning-of-line    # Shift+Home
+bindkey $'\e[1;2F' move-end-of-line          # Shift+End
 
 # --- Autocomplete ---
 
@@ -32,14 +34,10 @@ plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
-# --- Python ---
-
-eval "$(pyenv init -)"
-
 # --- Node ---
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # --- Starship ---
 

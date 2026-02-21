@@ -1,17 +1,16 @@
-<h1 align="center">Dotfiles</h1>
-<p align="center">Sensible defaults for development ⚡️</p>
+# Dotfiles
 
 ## Installation
 
 ```shell
-git clone https://github.com/lukemiloszewski/dotfiles.git "${HOME}/dotfiles"
+git clone https://github.com/lukemiloszewski/dotfiles.git "${HOME}/code/dotfiles"
 
 # for macos
-"${HOME}/dotfiles/scripts/install_macos.sh" | zsh
+"${HOME}/code/dotfiles/scripts/install_macos.sh" | zsh
 
 # for linux
-source "${HOME}/dotfiles/scripts/apt.sh"
-source "${HOME}/dotfiles/scripts/pyenv.sh"
+source "${HOME}/code/dotfiles/scripts/apt.sh"
+source "${HOME}/code/dotfiles/scripts/pyenv.sh"
 
-"${HOME}/dotfiles/scripts/install_linux.sh" | zsh
+"${HOME}/code/dotfiles/scripts/install_linux.sh" | zsh
 ```

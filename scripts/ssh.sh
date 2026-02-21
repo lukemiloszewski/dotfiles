@@ -8,7 +8,7 @@ eval "$(ssh-agent -s)"
 
 # create ssh folder
 touch ~/.ssh/config
-echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_ed25519" | tee ~/.ssh/config
-ssh-add -K ~/.ssh/id_ed25519
+echo "Host *\n AddKeysToAgent yes\n IdentityFile ~/.ssh/id_ed25519" | tee ~/.ssh/config
+ssh-add -apple-use-keychain ~/.ssh/id_ed25519
 
 # copy public key and add to GitHub - "pbcopy < ~/.ssh/id_ed25519.pub"
