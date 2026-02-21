@@ -2,14 +2,19 @@
 
 mkdir -p "${HOME}/code"
 
-# install starship prompt
-curl -sS https://starship.rs/install.sh | sh -s -- -y
+# install packages (zsh and dev tools)
+sudo bash "${HOME}/code/dotfiles/scripts/apt.sh"
+
+# install starship prompt (user-local, no sudo required)
+curl -sS https://starship.rs/install.sh | sh -s -- -y --bin-dir ~/.local/bin
 
 # install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # install rustup
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+mkdir -p "${HOME}/tmp"
+TMPDIR="${HOME}/tmp" curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+rm -rf "${HOME}/tmp"
 
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
