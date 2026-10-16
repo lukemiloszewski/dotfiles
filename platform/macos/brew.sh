@@ -29,6 +29,9 @@ brew install television
 brew install tmux
 brew install git-delta
 brew install ollama
+brew install opencode
+brew install bun
+brew install gh
 
 # --- Cask ---
 
@@ -46,6 +49,10 @@ brew install --cask zotero
 brew install --cask visual-studio-code
 brew install --cask simplenote
 brew install --cask alt-tab
+brew install --cask iterm2
+brew install --cask claude-code
+brew install --cask claude
+brew install --cask codex
 
 # --- Setup ---
 

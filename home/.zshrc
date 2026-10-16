@@ -46,6 +46,13 @@ zstyle ':completion:*' completer _expand _complete _files _correct _approximate 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 export NODE_OPTIONS="--max-old-space-size=2048"
 
+# --- Python ---
+
+if command -v uv >/dev/null 2>&1; then
+	eval "$(uv generate-shell-completion zsh)"
+	eval "$(uvx --generate-shell-completion zsh)"
+fi
+
 # --- Starship ---
 
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
