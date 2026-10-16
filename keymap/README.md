@@ -22,11 +22,7 @@ handled per app, in code:
 | macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked Karabiner |
 | VS Code | `platform/macos/vscode/keybindings.json` | Custom Ctrl bindings and terminal interrupt |
 
-Status: ✅ works once the swap is in place · 🔧 needs a rule · ❓ unverified,
-check on the machine · ➖ Windows-only.
-
-Every 🔧 row now has a rule. Rows are confirmed on a real machine once they
-pass the EventViewer checks in step 5.
+Status: ✅ works on macOS (tested side by side with Windows) · ➖ Windows-only.
 
 ## Set up on macOS
 
