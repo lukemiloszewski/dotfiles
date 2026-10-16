@@ -116,6 +116,7 @@ don't collide.
 | Add next occurrence | Ctrl+D | Cmd+D | ✅ |
 | Move line up / down | Alt+↑/↓ | Option+↑/↓ | ✅ |
 | Settings | Ctrl+, | Cmd+, | ✅ |
+| Switch editor tabs | Ctrl+Tab / Ctrl+Shift+Tab | Ctrl+Tab / Ctrl+Shift+Tab | ✅ (Karabiner: Cmd+Tab becomes Ctrl+Tab in VS Code) |
 | Toggle terminal | Ctrl+` | Ctrl+` | ✅ (Karabiner: Cmd+` becomes Ctrl+` in VS Code) |
 | Focus terminal / editor | Ctrl+K / Ctrl+J | Cmd+K / Cmd+J | ✅ (`platform/macos/vscode/keybindings.json`) |
 | Interrupt in terminal | Ctrl+C | Cmd+C | ✅ (`keybindings.json`: sends `^C` when nothing is selected) |

@@ -59,8 +59,14 @@
       ]
     },
     {
-      "description": "VS Code: Ctrl+` toggles the terminal (Cmd+` would cycle windows)",
+      "description": "VS Code: Ctrl+Tab switches editors and Ctrl+` toggles the terminal (Cmd+Tab would switch apps, Cmd+` would cycle windows)",
       "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "tab", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
+          "to": [{ "key_code": "tab", "modifiers": ["control"] }],
+          "conditions": [{ "type": "frontmost_application_if", "bundle_identifiers": ["^com\\.microsoft\\.VSCode"] }]
+        },
         {
           "type": "basic",
           "from": { "key_code": "grave_accent_and_tilde", "modifiers": { "mandatory": ["command"] } },
