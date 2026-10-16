@@ -18,7 +18,7 @@ handled per app, in code:
 | Layer | Config | Handles |
 |---|---|---|
 | Keyboard | `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json` | The table above, plus F1–F12 on both base layers |
-| Terminal | `home/.config/wezterm/wezterm.lua` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt, Alt keys passed to tmux |
+| Terminal | `home/.config/wezterm/wezterm.lua`, `home/.config/ghostty/config.ghostty` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt, Alt keys passed to tmux |
 | macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked Karabiner |
 | VS Code | `platform/macos/vscode/keybindings.json` | Custom Ctrl bindings and terminal interrupt |
 
@@ -52,7 +52,7 @@ Status: ✅ works on macOS (tested side by side with Windows) · ➖ Windows-onl
    The rule file lives in `seed/`, not `home/`, because Karabiner does not list
    symlinked rule files; seeds are copied once and never overwritten.
 4. **Enable the rules.** In Karabiner, open **Complex Modifications**, click
-   **Add predefined rule**, and enable all four rules under **Windows parity**.
+   **Add predefined rule**, and enable all five rules under **Windows parity**.
    Enabling copies a rule into `~/.config/karabiner/karabiner.json`, which
    Karabiner rewrites itself. After editing the repo file, copy it over the
    seeded one, then remove and re-enable the rules:
@@ -118,9 +118,11 @@ don't collide.
 | Interrupt in terminal | Ctrl+C | Cmd+C | ✅ (`keybindings.json`: sends `^C` when nothing is selected) |
 | Go to definition | F12 | F12 | ✅ (F-keys on the top row) |
 
-## WezTerm and tmux
+## WezTerm, Ghostty and tmux
 
-From `wezterm.lua` and `.tmux.conf`. These are the same keys on both systems.
+From `wezterm.lua`, `config.ghostty` and `.tmux.conf`. These are the same keys
+on both systems. Ghostty has no panes of its own here, so its Alt keys always go
+to tmux.
 The Alt keys act on WezTerm panes and tabs, or on tmux panes and windows when
 tmux is the foreground process (WezTerm passes them through). Not yet checked
 on Windows: if tmux runs inside WSL, WezTerm may see `wsl.exe` instead of tmux.
@@ -132,9 +134,10 @@ on Windows: if tmux runs inside WSL, WezTerm may see `wsl.exe` instead of tmux.
 | New tab or window | Alt+t | ✅ |
 | Move between panes | Alt+←/→/↑/↓ | ✅ |
 | Previous / next tab or window | Alt+Shift+←/→ | ✅ |
+| Next / previous terminal tab | Ctrl+Tab / Ctrl+Shift+Tab | ✅ (Karabiner: Cmd+Tab becomes Ctrl+Tab in terminals) |
 | Paste | Ctrl+V | ✅ (`Cmd+V` in macOS) |
 | Copy | Ctrl+Shift+C | ✅ (`Cmd+Shift+C` in macOS) |
-| Interrupt, history search, line start/end | Ctrl+C / R / A / E | ✅ (`Cmd+<letter>` forwarded as Ctrl) |
+| Interrupt, clear, history search, line start/end | Ctrl+C / L / R / A / E | ✅ (`Cmd+<letter>` forwarded as Ctrl) |
 | Shift+arrows, Home/End, word delete in zsh | per `.zshrc` | ✅ (bindings load after oh-my-zsh) |
 
 ## OS

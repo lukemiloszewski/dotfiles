@@ -8,13 +8,13 @@
           "type": "basic",
           "from": { "key_code": "home", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
           "to": [{ "key_code": "up_arrow", "modifiers": ["command"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
           "from": { "key_code": "end", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
           "to": [{ "key_code": "down_arrow", "modifiers": ["command"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
@@ -30,31 +30,31 @@
           "type": "basic",
           "from": { "key_code": "left_arrow", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
           "to": [{ "key_code": "left_arrow", "modifiers": ["option"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
           "from": { "key_code": "right_arrow", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
           "to": [{ "key_code": "right_arrow", "modifiers": ["option"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
           "from": { "key_code": "home", "modifiers": { "optional": ["shift"] } },
           "to": [{ "key_code": "left_arrow", "modifiers": ["command"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
           "from": { "key_code": "end", "modifiers": { "optional": ["shift"] } },
           "to": [{ "key_code": "right_arrow", "modifiers": ["command"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         },
         {
           "type": "basic",
           "from": { "key_code": "y", "modifiers": { "mandatory": ["command"] } },
           "to": [{ "key_code": "z", "modifiers": ["command", "shift"] }],
-          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$"] }]
+          "conditions": [{ "type": "frontmost_application_unless", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         }
       ]
     },
@@ -72,6 +72,17 @@
           "from": { "key_code": "grave_accent_and_tilde", "modifiers": { "mandatory": ["command"] } },
           "to": [{ "key_code": "grave_accent_and_tilde", "modifiers": ["control"] }],
           "conditions": [{ "type": "frontmost_application_if", "bundle_identifiers": ["^com\\.microsoft\\.VSCode"] }]
+        }
+      ]
+    },
+    {
+      "description": "Terminals (WezTerm, Ghostty): Ctrl+Tab switches tabs (Cmd+Tab would switch apps)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "tab", "modifiers": { "mandatory": ["command"], "optional": ["shift"] } },
+          "to": [{ "key_code": "tab", "modifiers": ["control"] }],
+          "conditions": [{ "type": "frontmost_application_if", "bundle_identifiers": ["^com\\.github\\.wez\\.wezterm$", "^com\\.mitchellh\\.ghostty$"] }]
         }
       ]
     },

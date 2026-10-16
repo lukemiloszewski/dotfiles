@@ -1,0 +1,49 @@
+# Ghostty on macOS, matching home/.config/wezterm/wezterm.lua. The NuPhy macOS
+# layers send Cmd from the physical Ctrl key (see keymap/README.md), so Cmd
+# shortcuts are forwarded as Ctrl to behave as the terminal does on Windows.
+
+# Option is Alt, so tmux's Alt bindings receive ESC-prefixed keys. Ghostty's
+# own Alt+Left/Right word jumps would otherwise hide Alt+arrows from tmux.
+macos-option-as-alt = true
+keybind = alt+arrow_left=unbind
+keybind = alt+arrow_right=unbind
+
+# Ctrl+<letter> (sent as Cmd+<letter>) reaches the shell: Ctrl+C interrupts,
+# Ctrl+L clears, Ctrl+R searches history. Ctrl+V still pastes.
+keybind = super+a=text:\x01
+keybind = super+b=text:\x02
+keybind = super+c=text:\x03
+keybind = super+d=text:\x04
+keybind = super+e=text:\x05
+keybind = super+f=text:\x06
+keybind = super+g=text:\x07
+keybind = super+h=text:\x08
+keybind = super+i=text:\x09
+keybind = super+j=text:\x0a
+keybind = super+k=text:\x0b
+keybind = super+l=text:\x0c
+keybind = super+m=text:\x0d
+keybind = super+n=text:\x0e
+keybind = super+o=text:\x0f
+keybind = super+p=text:\x10
+keybind = super+q=text:\x11
+keybind = super+r=text:\x12
+keybind = super+s=text:\x13
+keybind = super+t=text:\x14
+keybind = super+u=text:\x15
+keybind = super+w=text:\x17
+keybind = super+x=text:\x18
+keybind = super+y=text:\x19
+keybind = super+z=text:\x1a
+
+# Same clipboard and tab keys as WezTerm on Windows
+keybind = super+v=paste_from_clipboard
+keybind = super+shift+c=copy_to_clipboard
+keybind = super+shift+t=new_tab
+keybind = super+shift+w=close_surface
+
+# Word jumping, as Ctrl+arrows on Windows
+keybind = super+arrow_left=text:\x1b[1;5D
+keybind = super+arrow_right=text:\x1b[1;5C
+keybind = super+shift+arrow_left=text:\x1b[1;6D
+keybind = super+shift+arrow_right=text:\x1b[1;6C
