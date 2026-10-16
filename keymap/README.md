@@ -27,6 +27,35 @@ check on the machine · ➖ Windows-only.
 This is a draft from the dotfiles and common defaults. Every ❓ and each
 macOS-key column needs checking on a real machine before it is trusted.
 
+## Set up on macOS
+
+1. **Keyboard.** On USB, open [usevia.app](https://usevia.app) in Chrome or
+   Edge. If the board isn't detected, load
+   `keyboards/nuphy-air75-v2/nuphy-air75-v2-via3.json` on the Design tab
+   (enable **Show Design tab** in Settings). Under **Save + Load**, save the
+   current layout as a backup, then **Load Saved Layout** with
+   `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json`.
+2. **Apps.** Run `platform/macos/brew.sh`, which installs Karabiner-Elements and
+   WezTerm. Open Karabiner and approve the driver extension and Input Monitoring
+   permission in System Settings. Restart if macOS asks.
+3. **Link the config.** Run `platform/macos/install.sh`. Check that
+   `~/.config/karabiner/assets/complex_modifications/windows-parity.json` and
+   `~/.config/wezterm/wezterm.lua` exist. If Karabiner does not list the rule
+   file in the next step, copy it there instead of linking it.
+4. **Enable the rules.** In Karabiner, open **Complex Modifications**, click
+   **Add predefined rule**, and enable both rules under **Windows parity**.
+   Enabling copies a rule into `~/.config/karabiner/karabiner.json`, which
+   Karabiner rewrites itself, so after editing the repo file remove and
+   re-enable the rules.
+5. **Test.** In Karabiner's **EventViewer**, press the physical keys and check
+   the output: `Ctrl+Left` gives `Option+Left`, `Home` gives `Cmd+Left`,
+   `Ctrl+Y` gives `Cmd+Shift+Z`, and `` Ctrl+` `` in VS Code gives `` Ctrl+` ``.
+   If `Home` jumps by word, the rule order is wrong: the word-jump manipulators
+   must come before the `Home`/`End` ones, because `Home` outputs `Cmd+Left`.
+
+Known gap: in VS Code's integrated terminal `Ctrl+C` arrives as `Cmd+C`, which
+copies but does not interrupt. Add a VS Code keybinding if this matters.
+
 ## Text editing (any app)
 
 | Action | Windows | macOS | Status |
