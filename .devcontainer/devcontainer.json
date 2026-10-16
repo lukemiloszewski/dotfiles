@@ -1,51 +1,27 @@
 {
-  "name": "Development",
+  "name": "dotfiles",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": "..",
-    "args": {
-      "VARIANT": "3.10-bullseye"
-    }
+    "context": ".."
   },
+  "remoteUser": "dev",
+  "workspaceFolder": "/home/dev/code/dotfiles",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/dev/code/dotfiles,type=bind",
   "containerEnv": {
-    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
-    "GITHUB_USER": "${localEnv:GITHUB_USER}"
+    "GIT_NAME": "Dev",
+    "GIT_EMAIL": "dev@example.com"
   },
   "customizations": {
     "vscode": {
       "settings": {
-        "terminal.integrated.profiles.linux": {
-          "zsh": {
-            "path": "/usr/bin/zsh"
-          },
-          "bash": null
-        },
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "python.languageServer": "Default",
-        "dev.containers.copyGitConfig": false,
-				"python.linting.enabled": true,
-				"python.linting.banditPath": "/usr/local/pipx/bin/bandit",
-				"python.linting.flake8Path": "/usr/local/pipx/bin/flake8",
-				"python.linting.mypyPath": "/usr/local/pipx/bin/mypy",
-				"python.linting.pydocstylePath": "/usr/local/pipx/bin/pydocstyle",
-        "editor.formatOnSave": true,
-        "python.formatting.provider": "black",
-				"python.formatting.blackPath": "/usr/local/pipx/bin/black",
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": true
-        }
+        "dev.containers.copyGitConfig": false
       },
       "extensions": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "GitHub.copilot",
-        "ms-azuretools.vscode-docker",
-        "eamodio.gitlens",
-        "DavidAnson.vscode-markdownlint"
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format"
       ]
     }
   },
-  "postCreateCommand": ""
-  // "postCreateCommand": "./.devcontainer/post-create.sh > ~/post-create.log"
+  "postCreateCommand": "./bootstrap.sh"
 }

@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+# System packages for RHEL-family distributions (run as root).
+set -euo pipefail
+
 packages="zsh \
     openssh-clients \
     wget \
@@ -33,6 +37,7 @@ packages="zsh \
     unixODBC-devel \
     xz \
     zlib-devel \
+    jq \
     '@Development Tools'"
 
 dnf install -y ${packages} \

@@ -1,9 +1,13 @@
 # --- Dotfiles ---
 
-for file in "$HOME"/code/dotfiles/.{aliases,functions,exports}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
+files=(.aliases .exports .zshrc.local)
+
+for file ($files); do
+	if [[ -f "$HOME/$file" ]]; then
+		source "$HOME/$file"
+	fi
+done
+unset file
 
 # --- Keybindings ---
 
@@ -22,23 +26,32 @@ bindkey $'\e[1;2C' move-forward-char         # Shift+Right
 bindkey $'\e[1;2H' move-beginning-of-line    # Shift+Home
 bindkey $'\e[1;2F' move-end-of-line          # Shift+End
 
-# --- Autocomplete ---
+# --- zsh ---
+
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
+
+[ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case insensite for lowercase
 zstyle ':completion:*' insert-tab pending  # pasting with tabs doesn't perform completion
 zstyle ':completion:*' completer _expand _complete _files _correct _approximate  # default to file completion
 
-# --- Plugins ---
+# --- Rust ---
 
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
-
-source $ZSH/oh-my-zsh.sh
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # --- Node ---
 
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+export NODE_OPTIONS="--max-old-space-size=2048"
 
 # --- Starship ---
 
-eval "$(starship init zsh)"
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+
+# --- Entire ---
+
+if command -v entire >/dev/null 2>&1; then
+	autoload -Uz compinit && compinit && source <(entire completion zsh)
+fi

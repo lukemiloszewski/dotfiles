@@ -1,8 +1,6 @@
 local wezterm = require 'wezterm'
 
-return {
-    default_prog = { 'powershell.exe' },
-
+local config = {
     allow_win32_input_mode = true,
 
     keys = {
@@ -22,3 +20,9 @@ return {
         { key = 'DownArrow',  mods = 'CTRL|SHIFT', action = wezterm.action.SendKey { key = 'DownArrow',  mods = 'CTRL|SHIFT' } },
     },
 }
+
+if wezterm.target_triple:find('windows') then
+    config.default_prog = { 'powershell.exe' }
+end
+
+return config

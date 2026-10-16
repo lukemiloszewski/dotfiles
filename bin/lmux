@@ -1,0 +1,381 @@
+#!/usr/bin/env bash
+# lmux — cross-pane communication for AI agents.
+#
+# Vendored from https://github.com/ShawnPana/smux at f8f591b (where it is
+# called tmux-bridge), with fixes:
+#   - guard files moved off a predictable world-writable /tmp path
+#   - label resolution no longer breaks on labels containing "."
+#   - `grep -c` no longer emits a spurious count when nothing matches
+#   - the reply hint in `message` is configurable, not hardcoded
+#   - added `spawn` / `kill` so pane creation is scriptable
+set -euo pipefail
+
+VERSION="1.0.0"
+
+die() { echo "error: $*" >&2; exit 1; }
+
+# --- Read guard ---
+# Enforces read-before-act: an agent must read a pane before typing into it.
+#
+# Upstream kept these markers at /tmp/tmux-bridge-read-<pane>, a predictable
+# path in a world-writable directory. On a shared box another user can
+# pre-create the marker to defeat the guard, or point it somewhere else.
+# Prefer the per-user runtime dir, and refuse a directory we do not own.
+guard_dir() {
+  local dir="${XDG_RUNTIME_DIR:-/tmp/lmux-$(id -u)}/lmux"
+  if [[ -e "${dir}" ]]; then
+    [[ -d "${dir}" ]] || die "guard path ${dir} exists and is not a directory"
+    [[ -O "${dir}" ]] || die "guard directory ${dir} is not owned by $(id -un)"
+  else
+    mkdir -p "${dir}"
+    chmod 700 "${dir}"
+  fi
+  echo "${dir}"
+}
+
+read_guard_path() {
+  echo "$(guard_dir)/read-${1//%/_}"
+}
+
+mark_read()  { : > "$(read_guard_path "$1")"; }
+clear_read() { rm -f "$(read_guard_path "$1")"; }
+
+require_read() {
+  [[ -f "$(read_guard_path "$1")" ]] \
+    || die "must read the pane before interacting. Run: lmux read $1"
+}
+
+# --- Socket detection ---
+# Priority: LMUX_SOCKET > $TMUX (if alive) > scan for the pane's owner.
+
+detect_socket() {
+  if [[ -n "${LMUX_SOCKET:-}" ]]; then
+    [[ -S "${LMUX_SOCKET}" ]] \
+      || die "LMUX_SOCKET=${LMUX_SOCKET} is not a valid socket"
+    echo "${LMUX_SOCKET}"
+    return
+  fi
+
+  if [[ -n "${TMUX:-}" ]]; then
+    local socket="${TMUX%%,*}"
+    if [[ -S "${socket}" ]] && tmux -S "${socket}" list-sessions &>/dev/null; then
+      echo "${socket}"
+      return
+    fi
+  fi
+
+  local pane="${TMUX_PANE:-}"
+  if [[ -n "${pane}" ]]; then
+    local sock
+    for sock in "/tmp/tmux-$(id -u)"/*; do
+      [[ -S "${sock}" ]] || continue
+      if tmux -S "${sock}" display-message -t "${pane}" -p '#{pane_id}' &>/dev/null; then
+        echo "${sock}"
+        return
+      fi
+    done
+  fi
+
+  if tmux list-sessions &>/dev/null; then
+    echo "__default__"
+    return
+  fi
+
+  die "cannot find a reachable tmux server (TMUX=${TMUX:-<unset>}, TMUX_PANE=${TMUX_PANE:-<unset>})"
+}
+
+TMUX_SOCKET=""
+init_socket() { TMUX_SOCKET="$(detect_socket)"; }
+
+tmx() {
+  if [[ "${TMUX_SOCKET}" == "__default__" || -z "${TMUX_SOCKET}" ]]; then
+    tmux "$@"
+  else
+    tmux -S "${TMUX_SOCKET}" "$@"
+  fi
+}
+
+require_tmux() {
+  command -v tmux >/dev/null 2>&1 || die "tmux is not installed or not in PATH"
+}
+
+require_args() {
+  local need="$1" have="$2" cmd="$3"
+  (( have >= need )) || die "'${cmd}' requires at least ${need} argument(s)."
+}
+
+# --- Target resolution ---
+# Upstream treated any target containing "." as a native session:win.pane
+# target, so a label like "ai_api.main" silently failed to resolve. Labels are
+# explicitly set by a human or agent, so try them first and fall back to
+# native targets.
+
+resolve_label() {
+  tmx list-panes -a -F '#{pane_id} #{@name}' 2>/dev/null \
+    | awk -v lbl="$1" '$2 == lbl { print $1; exit }'
+}
+
+resolve_target() {
+  local target="$1" found
+
+  if [[ "${target}" =~ ^%[0-9]+$ ]]; then
+    echo "${target}"
+    return
+  fi
+
+  found="$(resolve_label "${target}")"
+  if [[ -n "${found}" ]]; then
+    echo "${found}"
+    return
+  fi
+
+  echo "${target}"
+}
+
+validate_target() {
+  tmx display-message -t "$1" -p '#{pane_id}' >/dev/null 2>&1 \
+    || die "invalid target: $1"
+}
+
+# Resolve, validate, and print a pane id in one step.
+target_of() {
+  local t
+  t="$(resolve_target "$1")"
+  validate_target "${t}"
+  echo "${t}"
+}
+
+# --- Commands ---
+
+cmd_list() {
+  printf "%-8s %-16s %-10s %-25s %-16s %s\n" \
+    "TARGET" "SESSION:WIN" "SIZE" "PROCESS" "LABEL" "CWD"
+  tmx list-panes -a \
+    -F '#{pane_id}|#{session_name}|#{window_index}|#{pane_pid}|#{pane_width}x#{pane_height}|#{@name}|#{pane_current_path}' \
+    2>/dev/null | while IFS='|' read -r id sess widx pid size label cwd; do
+      local proc child
+      proc="$(ps -o comm= -p "${pid}" 2>/dev/null || echo '?')"
+      child="$(pgrep -P "${pid}" 2>/dev/null | head -1 || true)"
+      if [[ -n "${child}" ]]; then
+        local child_proc
+        child_proc="$(ps -o comm= -p "${child}" 2>/dev/null || true)"
+        [[ -n "${child_proc}" ]] && proc="${child_proc}"
+      fi
+      printf "%-8s %-16s %-10s %-25s %-16s %s\n" \
+        "${id}" "${sess}:${widx}" "${size}" "${proc}" "${label:--}" "${cwd/#$HOME/\~}"
+    done
+}
+
+cmd_read() {
+  require_args 1 $# "read"
+  local target
+  target="$(target_of "$1")"
+  tmx capture-pane -t "${target}" -p -J -S "-${2:-50}"
+  mark_read "${target}"
+}
+
+cmd_type() {
+  require_args 2 $# "type"
+  local target
+  target="$(target_of "$1")"
+  require_read "${target}"
+  tmx send-keys -t "${target}" -l -- "$2"
+  clear_read "${target}"
+}
+
+cmd_keys() {
+  require_args 2 $# "keys"
+  local target
+  target="$(target_of "$1")"
+  require_read "${target}"
+  shift
+  local key
+  for key in "$@"; do
+    tmx send-keys -t "${target}" "${key}"
+  done
+  clear_read "${target}"
+}
+
+cmd_message() {
+  require_args 2 $# "message"
+  local target
+  target="$(target_of "$1")"
+  require_read "${target}"
+
+  local sender="${TMUX_PANE:-}"
+  [[ -n "${sender}" ]] || die "not running inside a tmux pane (\$TMUX_PANE is unset)"
+
+  local label from at hint
+  label="$(tmx display-message -t "${sender}" -p '#{@name}' 2>/dev/null || true)"
+  from="${label:-${sender}}"
+  at="$(tmx display-message -t "${sender}" -p '#{session_name}:#{window_index}.#{pane_index}' 2>/dev/null || true)"
+  hint="${LMUX_REPLY_HINT:-load the tmux skill to reply}"
+
+  tmx send-keys -t "${target}" -l -- \
+    "[lmux from:${from} pane:${sender} at:${at} — ${hint}] $2"
+  clear_read "${target}"
+}
+
+cmd_name() {
+  require_args 2 $# "name"
+  local target
+  target="$(target_of "$1")"
+  tmx set-option -p -t "${target}" @name "$2"
+}
+
+cmd_resolve() {
+  require_args 1 $# "resolve"
+  local found
+  found="$(resolve_label "$1")"
+  [[ -n "${found}" ]] || die "no pane found with label '$1'"
+  echo "${found}"
+}
+
+# spawn <label> [-h|-v] [command]
+# Creates a labelled pane by splitting the current one. Upstream had no way to
+# create panes at all, so a layout had to be built with raw tmux and labelled
+# afterwards. A command, if given, is sent to the new pane's shell rather than
+# replacing it, so the pane survives the command exiting.
+cmd_spawn() {
+  require_args 1 $# "spawn"
+  local label="$1"; shift
+
+  [[ -z "$(resolve_label "${label}")" ]] || die "label '${label}' is already in use"
+
+  local split="-h"
+  if [[ "${1:-}" == "-h" || "${1:-}" == "-v" ]]; then
+    split="$1"; shift
+  fi
+
+  local from="${TMUX_PANE:-}"
+  [[ -n "${from}" ]] || die "not running inside a tmux pane (\$TMUX_PANE is unset)"
+
+  local pane
+  pane="$(tmx split-window "${split}" -t "${from}" \
+    -c "#{pane_current_path}" -P -F '#{pane_id}')"
+  tmx set-option -p -t "${pane}" @name "${label}"
+
+  if [[ $# -gt 0 ]]; then
+    tmx send-keys -t "${pane}" -l -- "$1"
+    tmx send-keys -t "${pane}" Enter
+  fi
+
+  echo "${pane}"
+}
+
+cmd_kill() {
+  require_args 1 $# "kill"
+  local target
+  target="$(target_of "$1")"
+  clear_read "${target}"
+  tmx kill-pane -t "${target}"
+}
+
+cmd_doctor() {
+  local ok=true
+  echo "lmux doctor v${VERSION}"
+  echo "---"
+  echo "TMUX_PANE:          ${TMUX_PANE:-<unset>}"
+  echo "TMUX:               ${TMUX:-<unset>}"
+  echo "LMUX_SOCKET:        ${LMUX_SOCKET:-<unset>}"
+  echo "Guard directory:    $(guard_dir)"
+
+  echo "---"
+  local detected
+  detected="$(detect_socket 2>/dev/null || echo '__failed__')"
+  case "${detected}" in
+    __failed__)  echo "Detected socket:    FAILED — no reachable tmux server"; ok=false ;;
+    __default__) echo "Detected socket:    (default tmux server)" ;;
+    *)           echo "Detected socket:    ${detected}" ;;
+  esac
+
+  echo "---"
+  if [[ -n "${TMUX_PANE:-}" && "${detected}" != "__failed__" ]]; then
+    if tmx display-message -t "${TMUX_PANE}" -p '#{pane_id}' &>/dev/null; then
+      echo "This pane (${TMUX_PANE}): visible to server"
+    else
+      echo "This pane (${TMUX_PANE}): NOT visible to server"
+      ok=false
+    fi
+  fi
+
+  if [[ "${detected}" != "__failed__" ]]; then
+    local panes labelled
+    panes="$(tmx list-panes -a -F '#{pane_id}' 2>/dev/null | wc -l | tr -d ' ')"
+    # `grep -c` prints 0 and exits 1 when nothing matches, so upstream's
+    # `|| echo 0` fired as well and printed a second, stray count.
+    labelled="$(tmx list-panes -a -F '#{@name}' 2>/dev/null | grep -cv '^$' || true)"
+    echo "Total panes:        ${panes}"
+    echo "Labelled panes:     ${labelled:-0}"
+  fi
+
+  echo "---"
+  if ${ok}; then
+    echo "Status: OK"
+  else
+    echo "Status: ISSUES DETECTED"
+    echo ""
+    echo "Likely cause: \$TMUX is stale (the terminal was restarted)."
+    echo "Fix: re-source the tmux env, or set LMUX_SOCKET explicitly."
+    return 1
+  fi
+}
+
+usage() {
+  cat <<'EOF'
+lmux — cross-pane communication for AI agents
+
+Usage: lmux <command> [args...]
+
+Commands:
+  list                          Show all panes (target, process, label, cwd)
+  spawn <label> [-h|-v] [cmd]   Split the current pane and label the new one
+  kill <target>                 Kill a pane
+  read <target> [lines]         Read the last N lines from a pane (default 50)
+  type <target> <text>          Type text without pressing Enter
+  keys <target> <key>...        Send special keys (Enter, Escape, C-c, ...)
+  message <target> <text>       Type text prefixed with sender and reply target
+  name <target> <label>         Label a pane (shown in the tmux border)
+  resolve <label>               Print the pane id for a label
+  id                            Print this pane's id ($TMUX_PANE)
+  doctor                        Diagnose tmux connectivity
+  version                       Print version
+
+Targets may be a label, a pane id (%N), or a native tmux target. Labels are
+resolved first, so a label containing "." or ":" still works.
+
+Reading a pane is required before typing into it; the mark is cleared after
+each type/keys, so each interaction is read → act.
+
+Environment:
+  LMUX_SOCKET       Override tmux server socket detection
+  LMUX_REPLY_HINT   Reply instruction embedded by `message`
+EOF
+  exit 0
+}
+
+case "${1:-}" in
+  ""|-h|--help|help) usage ;;
+  version|--version) echo "lmux ${VERSION}"; exit ;;
+  id)
+    [[ -n "${TMUX_PANE:-}" ]] || die "not running inside a tmux pane"
+    echo "${TMUX_PANE}"; exit ;;
+esac
+
+require_tmux
+init_socket
+
+cmd="$1"; shift
+case "${cmd}" in
+  list)         cmd_list "$@" ;;
+  spawn)        cmd_spawn "$@" ;;
+  kill)         cmd_kill "$@" ;;
+  read)         cmd_read "$@" ;;
+  type)         cmd_type "$@" ;;
+  keys)         cmd_keys "$@" ;;
+  message|msg)  cmd_message "$@" ;;
+  name)         cmd_name "$@" ;;
+  resolve)      cmd_resolve "$@" ;;
+  doctor)       cmd_doctor "$@" ;;
+  *)            die "unknown command: ${cmd}. Run 'lmux' for usage." ;;
+esac

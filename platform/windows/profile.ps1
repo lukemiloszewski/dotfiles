@@ -2,9 +2,8 @@
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
 Import-Module posh-git
-Import-Module oh-my-posh
-$omp_config = Join-Path $PSScriptRoot ".\takuya.omp.json"
-oh-my-posh --init --shell pwsh --config $omp_config | Invoke-Expression
+$env:STARSHIP_CONFIG = Join-Path $HOME ".config\starship.toml"
+Invoke-Expression (&starship init powershell)
 
 Import-Module -Name Terminal-Icons
 

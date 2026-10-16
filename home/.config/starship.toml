@@ -1,12 +1,20 @@
+format = "$username$hostname$directory$git_branch$git_commit$time$line_break$character"
+
+[username]
+show_always = true
+format = "[$user]($style)@"
+style_user = "bold yellow"
+
 [hostname]
 ssh_only = false
-format = "[lukemiloszewski](bold red) "
+format = "[$hostname]($style) "
+style = "bold green"
 disabled = false
 
 [directory]
 format = "at 🚀 [$path]($style)[$read_only]($read_only_style) "
-truncate_to_repo = true  # truncate to root of git repository
-truncation_length = 3  # number of parent folders current directory will be truncated to
+truncate_to_repo = true
+truncation_length = 3
 truncation_symbol = ""
 
 [git_branch]
@@ -20,23 +28,8 @@ commit_hash_length = 7
 tag_symbol = "🔖 "
 tag_disabled = false
 
-[battery]
-full_symbol = "🔋 "
-charging_symbol = "⚡️ "
-discharging_symbol = "💀 "
-
-[[battery.display]]
-threshold = 20
-style = "bold red"
-
 [line_break]
 disabled = false
-
-[package]
-disabled = true
-
-[python]
-python_binary = "python"
 
 [time]
 disabled = false
