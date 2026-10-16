@@ -19,7 +19,7 @@ handled per app, in code:
 |---|---|---|
 | Keyboard | `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json` | The table above, plus F1–F12 on both base layers |
 | Terminal | `home/.config/wezterm/wezterm.lua` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt |
-| macOS leftovers | `home/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked 🔧 |
+| macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked 🔧 |
 
 Status: ✅ works once the swap is in place · 🔧 needs a rule · ❓ unverified,
 check on the machine · ➖ Windows-only.
@@ -35,18 +35,33 @@ macOS-key column needs checking on a real machine before it is trusted.
    (enable **Show Design tab** in Settings). Under **Save + Load**, save the
    current layout as a backup, then **Load Saved Layout** with
    `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json`.
-2. **Apps.** Run `platform/macos/brew.sh`, which installs Karabiner-Elements and
-   WezTerm. Open Karabiner and approve the driver extension and Input Monitoring
-   permission in System Settings. Restart if macOS asks.
-3. **Link the config.** Run `platform/macos/install.sh`. Check that
-   `~/.config/karabiner/assets/complex_modifications/windows-parity.json` and
-   `~/.config/wezterm/wezterm.lua` exist. If Karabiner does not list the rule
-   file in the next step, copy it there instead of linking it.
+2. **Apps.** Install WezTerm and Karabiner-Elements (both in
+   `platform/macos/brew.sh`):
+
+   ```shell
+   brew install --cask wezterm karabiner-elements
+   ```
+
+   Run this in a real terminal: the Karabiner installer uses `sudo` and fails
+   without a password prompt (e.g. from an agent session). Open Karabiner
+   (`open -a Karabiner-Elements`), approve the driver extension and Input
+   Monitoring in System Settings, and restart if macOS asks. In the Keyboard
+   Setup Assistant choose **ANSI**.
+3. **Link the config.** Run `bootstrap.sh` (or `platform/macos/install.sh` on a
+   fresh machine). It links `~/.config/wezterm/wezterm.lua` and copies the rule
+   file to `~/.config/karabiner/assets/complex_modifications/windows-parity.json`.
+   The rule file lives in `seed/`, not `home/`, because Karabiner does not list
+   symlinked rule files; seeds are copied once and never overwritten.
 4. **Enable the rules.** In Karabiner, open **Complex Modifications**, click
    **Add predefined rule**, and enable both rules under **Windows parity**.
    Enabling copies a rule into `~/.config/karabiner/karabiner.json`, which
-   Karabiner rewrites itself, so after editing the repo file remove and
-   re-enable the rules.
+   Karabiner rewrites itself. After editing the repo file, copy it over the
+   seeded one, then remove and re-enable the rules:
+
+   ```shell
+   cp seed/.config/karabiner/assets/complex_modifications/windows-parity.json \
+     ~/.config/karabiner/assets/complex_modifications/
+   ```
 5. **Test.** In Karabiner's **EventViewer**, press the physical keys and check
    the output: `Ctrl+Left` gives `Option+Left`, `Home` gives `Cmd+Left`,
    `Ctrl+Y` gives `Cmd+Shift+Z`, and `` Ctrl+` `` in VS Code gives `` Ctrl+` ``.

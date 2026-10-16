@@ -33,7 +33,7 @@ layer; layers 2 and 3 are unchanged. See [`keymap/`](../../keymap/README.md).
 | Right Ctrl | Ctrl | Cmd |
 
 The top row is F1–F12 on both base layers; the media keys are on Fn. The
-per-app remaps that firmware can't do are in `home/.config/karabiner/` and
+per-app remaps that firmware can't do are in `seed/.config/karabiner/` and
 `home/.config/wezterm/wezterm.lua`.
 
 ## Load and save
