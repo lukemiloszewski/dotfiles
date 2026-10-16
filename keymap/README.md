@@ -19,13 +19,14 @@ handled per app, in code:
 |---|---|---|
 | Keyboard | `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json` | The table above, plus F1–F12 on both base layers |
 | Terminal | `home/.config/wezterm/wezterm.lua` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt |
-| macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked 🔧 |
+| macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked Karabiner |
+| VS Code | `platform/macos/vscode/keybindings.json` | Custom Ctrl bindings and terminal interrupt |
 
 Status: ✅ works once the swap is in place · 🔧 needs a rule · ❓ unverified,
 check on the machine · ➖ Windows-only.
 
-This is a draft from the dotfiles and common defaults. Every ❓ and each
-macOS-key column needs checking on a real machine before it is trusted.
+Every 🔧 row now has a rule. Rows are confirmed on a real machine once they
+pass the EventViewer checks in step 5.
 
 ## Set up on macOS
 
@@ -53,7 +54,7 @@ macOS-key column needs checking on a real machine before it is trusted.
    The rule file lives in `seed/`, not `home/`, because Karabiner does not list
    symlinked rule files; seeds are copied once and never overwritten.
 4. **Enable the rules.** In Karabiner, open **Complex Modifications**, click
-   **Add predefined rule**, and enable both rules under **Windows parity**.
+   **Add predefined rule**, and enable all four rules under **Windows parity**.
    Enabling copies a rule into `~/.config/karabiner/karabiner.json`, which
    Karabiner rewrites itself. After editing the repo file, copy it over the
    seeded one, then remove and re-enable the rules:
@@ -64,12 +65,15 @@ macOS-key column needs checking on a real machine before it is trusted.
    ```
 5. **Test.** In Karabiner's **EventViewer**, press the physical keys and check
    the output: `Ctrl+Left` gives `Option+Left`, `Home` gives `Cmd+Left`,
-   `Ctrl+Y` gives `Cmd+Shift+Z`, and `` Ctrl+` `` in VS Code gives `` Ctrl+` ``.
+   `Ctrl+Home` gives `Cmd+Up`, `Ctrl+Backspace` gives `Option+Delete`,
+   `Ctrl+Y` gives `Cmd+Shift+Z`, `` Ctrl+` `` in VS Code gives `` Ctrl+` ``,
+   `Ctrl+Tab` in Chrome gives `Ctrl+Tab`, and `Alt+F4` gives `Cmd+Q`.
    If `Home` jumps by word, the rule order is wrong: the word-jump manipulators
    must come before the `Home`/`End` ones, because `Home` outputs `Cmd+Left`.
 
-Known gap: in VS Code's integrated terminal `Ctrl+C` arrives as `Cmd+C`, which
-copies but does not interrupt. Add a VS Code keybinding if this matters.
+Karabiner doesn't chain manipulators: a rule's output is not remapped again,
+so `Alt+Left` (back in Chrome) and `Ctrl+Left` (which outputs `Option+Left`)
+don't collide.
 
 ## Text editing (any app)
 
@@ -77,13 +81,13 @@ copies but does not interrupt. Add a VS Code keybinding if this matters.
 |---|---|---|---|
 | Copy / cut / paste | Ctrl+C / X / V | Cmd+C / X / V | ✅ |
 | Undo | Ctrl+Z | Cmd+Z | ✅ |
-| Redo | Ctrl+Y | Cmd+Shift+Z | 🔧 |
+| Redo | Ctrl+Y | Cmd+Shift+Z | ✅ (Karabiner) |
 | Select all / save / find | Ctrl+A / S / F | Cmd+A / S / F | ✅ |
-| Word left / right | Ctrl+←/→ | Option+←/→ | 🔧 |
-| Select word | Ctrl+Shift+←/→ | Option+Shift+←/→ | 🔧 |
-| Delete previous word | Ctrl+Backspace | Option+Delete | 🔧 |
-| Line start / end | Home / End | Cmd+←/→ | 🔧 |
-| Document start / end | Ctrl+Home / End | Cmd+↑/↓ | 🔧 |
+| Word left / right | Ctrl+←/→ | Option+←/→ | ✅ (Karabiner) |
+| Select word | Ctrl+Shift+←/→ | Option+Shift+←/→ | ✅ (Karabiner) |
+| Delete previous / next word | Ctrl+Backspace / Delete | Option+Delete / Fn+Option+Delete | ✅ (Karabiner, also in WezTerm) |
+| Line start / end | Home / End | Cmd+←/→ | ✅ (Karabiner) |
+| Document start / end | Ctrl+Home / End | Cmd+↑/↓ | ✅ (Karabiner) |
 
 ## Chrome
 
@@ -92,11 +96,11 @@ copies but does not interrupt. Add a VS Code keybinding if this matters.
 | New tab / close / reopen | Ctrl+T / W / Shift+T | Cmd+T / W / Shift+T | ✅ |
 | Address bar | Ctrl+L | Cmd+L | ✅ |
 | Switch to tab 1–8 | Ctrl+1–8 | Cmd+1–8 | ✅ |
-| Next / previous tab | Ctrl+Tab / Ctrl+Shift+Tab | Ctrl+Tab / Ctrl+Shift+Tab | 🔧 (the physical Ctrl sends Cmd, so Cmd+Tab must become Ctrl+Tab in Chrome) |
-| Next / previous tab (alt) | Ctrl+PgDn / PgUp | Cmd+Option+→ / ← | 🔧 |
-| Back / forward | Alt+← / → | Cmd+[ / ] | 🔧 |
+| Next / previous tab | Ctrl+Tab / Ctrl+Shift+Tab | Ctrl+Tab / Ctrl+Shift+Tab | ✅ (Karabiner: Cmd+Tab becomes Ctrl+Tab in Chrome) |
+| Next / previous tab (alt) | Ctrl+PgDn / PgUp | Cmd+Option+→ / ← | ✅ (Karabiner) |
+| Back / forward | Alt+← / → | Cmd+[ / ] | ✅ (Karabiner) |
 | Reload | Ctrl+R / F5 | Cmd+R / F5 | ✅ |
-| Developer tools | F12, Ctrl+Shift+I | F12 works; Cmd+Option+I | ✅ / 🔧 |
+| Developer tools / console | F12, Ctrl+Shift+I / J | F12; Cmd+Option+I / J | ✅ (Karabiner) |
 
 ## VS Code
 
@@ -109,7 +113,9 @@ copies but does not interrupt. Add a VS Code keybinding if this matters.
 | Add next occurrence | Ctrl+D | Cmd+D | ✅ |
 | Move line up / down | Alt+↑/↓ | Option+↑/↓ | ✅ |
 | Settings | Ctrl+, | Cmd+, | ✅ |
-| Toggle terminal | Ctrl+` | Ctrl+` | 🔧 (Cmd+` must become Ctrl+` in VS Code) |
+| Toggle terminal | Ctrl+` | Ctrl+` | ✅ (Karabiner: Cmd+` becomes Ctrl+` in VS Code) |
+| Focus terminal / editor | Ctrl+K / Ctrl+J | Cmd+K / Cmd+J | ✅ (`platform/macos/vscode/keybindings.json`) |
+| Interrupt in terminal | Ctrl+C | Cmd+C | ✅ (`keybindings.json`: sends `^C` when nothing is selected) |
 | Go to definition | F12 | F12 | ✅ (F-keys on the top row) |
 
 ## WezTerm and tmux
@@ -125,17 +131,17 @@ From `wezterm.lua` and `.tmux.conf`. These are the same keys on both systems.
 | Paste | Ctrl+V | ✅ (`Cmd+V` in macOS) |
 | Copy | Ctrl+Shift+C | ✅ (`Cmd+Shift+C` in macOS) |
 | Interrupt, history search, line start/end | Ctrl+C / R / A / E | ✅ (`Cmd+<letter>` forwarded as Ctrl) |
-| Shift+arrows, Home/End in zsh | per `.zshrc` | ❓ |
+| Shift+arrows, Home/End, word delete in zsh | per `.zshrc` | ✅ (bindings load after oh-my-zsh) |
 
 ## OS
 
 | Action | Windows | macOS | Status |
 |---|---|---|---|
 | Switch apps | Alt+Tab | Option+Tab | ✅ (AltTab) |
-| Screenshot to clipboard | Win+Shift+S | Cmd+Ctrl+Shift+4 | 🔧 |
-| Task manager | Ctrl+Shift+Esc | Cmd+Option+Esc | 🔧 |
+| Screenshot to clipboard | Win+Shift+S | Cmd+Ctrl+Shift+4 | ✅ (Karabiner) |
+| Task manager | Ctrl+Shift+Esc | Cmd+Option+Esc | ✅ (Karabiner, opens Force Quit) |
 | Clipboard history | Win+V | none built in | ➖ |
-| Quit app | Alt+F4 | Cmd+Q | 🔧 |
+| Quit app | Alt+F4 | Cmd+Q | ✅ (Karabiner) |
 
 ## Open decisions
 

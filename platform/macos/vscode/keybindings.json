@@ -1,0 +1,33 @@
+// VS Code keybindings for macOS, linked into ~/Library/Application Support/Code/User
+// by bootstrap.sh. The NuPhy macOS layers send Cmd from the physical Ctrl key
+// (see keymap/README.md), so the Windows Ctrl bindings are repeated with Cmd.
+[
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.terminal.focus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.focusActiveEditorGroup"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.terminal.focus"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.focusActiveEditorGroup"
+  },
+  // Ctrl+C in the terminal: copy with a selection, otherwise interrupt, as on Windows
+  {
+    "key": "cmd+c",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u0003" },
+    "when": "terminalFocus && !terminalTextSelected"
+  }
+]
