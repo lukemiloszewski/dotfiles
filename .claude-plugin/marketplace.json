@@ -1,0 +1,15 @@
+{
+  "name": "dotfiles",
+  "owner": { "name": "Luke Miloszewski" },
+  "metadata": {
+    "description": "Personal agent workstation plugins",
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "lmux",
+      "description": "tmux pane orchestration and cross-agent messaging via lmux",
+      "source": "./plugins/lmux"
+    }
+  ]
+}

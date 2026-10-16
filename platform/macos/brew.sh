@@ -26,6 +26,8 @@ brew install git
 brew install git-lfs
 brew install uv
 brew install television
+brew install tmux
+brew install git-delta
 brew install ollama
 
 # --- Cask ---
@@ -34,7 +36,7 @@ brew install --cask 1password
 brew install --cask docker
 brew install --cask google-chrome
 brew install --cask itsycal
-brew install --cask ghossty
+brew install --cask ghostty
 brew install --cask logi-options-plus
 brew install --cask postman
 brew install --cask rectangle

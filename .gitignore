@@ -1,0 +1,6 @@
+# Per-machine identity, included by home/.gitconfig
+home/.gitconfig.local
+
+# Local overrides: never tracked, so work or machine-specific values stay out
+*.local
+.claude/

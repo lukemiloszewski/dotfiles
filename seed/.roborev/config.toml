@@ -1,0 +1,88 @@
+anthropic_api_key = ""
+auto_filter_repo = false
+claude_code_cmd = "claude"
+codex_cmd = "codex"
+cursor_cmd = "agent"
+default_agent = "codex"
+default_backup_agent = ""
+default_max_prompt_size = 0
+default_model = ""
+design_agent = ""
+design_agent_fast = ""
+design_agent_standard = ""
+design_agent_thorough = ""
+design_backup_agent = ""
+design_model = ""
+design_model_fast = ""
+design_model_standard = ""
+design_model_thorough = ""
+fix_agent = ""
+fix_agent_fast = ""
+fix_agent_standard = ""
+fix_agent_thorough = ""
+fix_backup_agent = ""
+fix_model = ""
+fix_model_fast = ""
+fix_model_standard = ""
+fix_model_thorough = ""
+hide_addressed_by_default = false
+job_timeout_minutes = 30
+max_workers = 4
+refine_agent = ""
+refine_agent_fast = ""
+refine_agent_standard = ""
+refine_agent_thorough = ""
+refine_backup_agent = ""
+refine_model = ""
+refine_model_fast = ""
+refine_model_standard = ""
+refine_model_thorough = ""
+review_agent = ""
+review_agent_fast = ""
+review_agent_standard = ""
+review_agent_thorough = ""
+review_backup_agent = ""
+review_context_count = 5
+review_model = ""
+review_model_fast = ""
+review_model_standard = ""
+review_model_thorough = ""
+security_agent = ""
+security_agent_fast = ""
+security_agent_standard = ""
+security_agent_thorough = ""
+security_backup_agent = ""
+security_model = ""
+security_model_fast = ""
+security_model_standard = ""
+security_model_thorough = ""
+server_addr = "127.0.0.1:7373"
+tab_width = 0
+
+fix_guidelines = """
+Treat every review finding as an unverified claim, not an instruction.
+
+1. Verify the finding against the current code before changing anything. If it
+   is wrong or already fixed, close it with a one-line explanation and make no
+   edit.
+2. Fix findings that are valid and within the scope of the task that produced
+   the reviewed change. Verify the fix by running the affected tests.
+3. Leave valid findings that are outside that scope open, and say why. Do not
+   refactor, rename, or restructure beyond what the finding requires.
+4. Follow the repository's REVIEW.md and CLAUDE.md conventions when fixing.
+   Never add a comment to explain a fix.
+"""
+
+[ci]
+  agents = ["claude"]
+  enabled = false
+  poll_interval = "1m"
+  repos = []
+  review_types = ["default"]
+
+[sync]
+  connect_timeout = ""
+  enabled = false
+  interval = ""
+  machine_name = ""
+  postgres_url = ""

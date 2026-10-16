@@ -1,0 +1,6 @@
+{
+  "name": "lmux",
+  "version": "1.0.0",
+  "description": "tmux pane orchestration and cross-agent messaging via lmux",
+  "author": { "name": "Luke Miloszewski" }
+}
