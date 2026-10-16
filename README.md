@@ -16,6 +16,7 @@ snippets).
 | `platform/windows/` | `bootstrap.ps1`, `profile.ps1`. |
 | `scripts/` | `install.sh` (user tooling), `install-agents.sh`, `ssh.sh`. |
 | `espanso/` | Text snippets, linked on macOS and Windows. |
+| `keyboards/` | VIA definition and saved keymap for the NuPhy Air75 V2. Not linked. |
 | `plugins/` | Claude plugin for `lmux`. |
 
 ## Install
