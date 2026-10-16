@@ -46,6 +46,8 @@ seed_home() {
     if [[ -e "${dst}" ]]; then
       continue
     fi
+    # A link left behind by an earlier layout whose target is gone.
+    [[ -L "${dst}" ]] && rm "${dst}"
     mkdir -p "$(dirname "${dst}")"
     cp "${src}" "${dst}"
     info "Seeded ~/${rel}"
