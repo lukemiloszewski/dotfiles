@@ -9,7 +9,20 @@ for file ($files); do
 done
 unset file
 
+# --- zsh ---
+
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
+
+[ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case insensite for lowercase
+zstyle ':completion:*' insert-tab pending  # pasting with tabs doesn't perform completion
+zstyle ':completion:*' completer _expand _complete _files _correct _approximate  # default to file completion
+
 # --- Keybindings ---
+
+# After oh-my-zsh: with EDITOR=vim zsh starts in the vi keymap, and
+# oh-my-zsh's `bindkey -e` switches to emacs, dropping earlier bindings.
 
 move-backward-char() { zle backward-char }
 move-forward-char()  { zle forward-char }
@@ -25,16 +38,9 @@ bindkey $'\e[1;2D' move-backward-char        # Shift+Left
 bindkey $'\e[1;2C' move-forward-char         # Shift+Right
 bindkey $'\e[1;2H' move-beginning-of-line    # Shift+Home
 bindkey $'\e[1;2F' move-end-of-line          # Shift+End
-
-# --- zsh ---
-
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
-
-[ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
-
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case insensite for lowercase
-zstyle ':completion:*' insert-tab pending  # pasting with tabs doesn't perform completion
-zstyle ':completion:*' completer _expand _complete _files _correct _approximate  # default to file completion
+bindkey $'\e[H' beginning-of-line            # Home (normal cursor mode)
+bindkey $'\e[F' end-of-line                  # End (normal cursor mode)
+bindkey $'\e[3;3~' kill-word                 # Option+Delete (Ctrl+Delete via Karabiner)
 
 # --- Rust ---
 

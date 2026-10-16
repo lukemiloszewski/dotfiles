@@ -39,7 +39,7 @@ brew install --cask 1password
 brew install --cask docker
 brew install --cask google-chrome
 brew install --cask itsycal
-brew install --cask ghostty
+brew install --cask karabiner-elements
 brew install --cask logi-options-plus
 brew install --cask postman
 brew install --cask rectangle
@@ -47,6 +47,7 @@ brew install --cask spotify
 brew install --cask todoist
 brew install --cask zotero
 brew install --cask visual-studio-code
+brew install --cask wezterm
 brew install --cask simplenote
 brew install --cask alt-tab
 brew install --cask iterm2

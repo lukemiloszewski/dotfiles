@@ -12,10 +12,12 @@ snippets).
 | `bin/` | Tools linked into `~/.local/bin`, currently `lmux`. |
 | `seed/` | Files copied into `$HOME` once, for config a tool rewrites itself. |
 | `platform/linux/` | `dnf.sh`, `apt.sh` (root), `install-tmux.sh` (tmux 3.x from source). |
-| `platform/macos/` | `install.sh`, `brew.sh`. |
+| `platform/macos/` | `install.sh`, `brew.sh`, `vscode/keybindings.json` (linked into VS Code's user folder). |
 | `platform/windows/` | `bootstrap.ps1`, `profile.ps1`. |
 | `scripts/` | `install.sh` (user tooling), `install-agents.sh`, `ssh.sh`. |
 | `espanso/` | Text snippets, linked on macOS and Windows. |
+| `keyboards/` | VIA definition and saved keymap for the NuPhy Air75 V2. Not linked. |
+| `keymap/` | Shortcut inventory and the Windows-parity model for macOS. |
 | `plugins/` | Claude plugin for `lmux`. |
 
 ## Install

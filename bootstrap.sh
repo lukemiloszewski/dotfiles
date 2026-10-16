@@ -103,6 +103,7 @@ main() {
   link_tree "${REPO_DIR}/bin" "${HOME}/.local/bin"
   if [[ "$(uname -s)" == "Darwin" ]]; then
     link_tree "${REPO_DIR}/espanso" "${HOME}/Library/Application Support/espanso"
+    link_tree "${REPO_DIR}/platform/macos/vscode" "${HOME}/Library/Application Support/Code/User"
   fi
   seed_home
   write_git_identity
