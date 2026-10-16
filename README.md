@@ -17,6 +17,7 @@ snippets).
 | `scripts/` | `install.sh` (user tooling), `install-agents.sh`, `ssh.sh`. |
 | `espanso/` | Text snippets, linked on macOS and Windows. |
 | `keyboards/` | VIA definition and saved keymap for the NuPhy Air75 V2. Not linked. |
+| `keymap/` | Shortcut inventory and the Windows-parity model for macOS. |
 | `plugins/` | Claude plugin for `lmux`. |
 
 ## Install
