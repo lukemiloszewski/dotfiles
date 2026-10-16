@@ -117,8 +117,18 @@
       ]
     },
     {
-      "description": "Windows system shortcuts: Win+Shift+S screenshots to the clipboard, Ctrl+Shift+Esc force quits, Alt+F4 quits",
+      "description": "Windows system shortcuts: Win+Ctrl+Left/Right switches desktops, Win+Shift+S screenshots to the clipboard, Ctrl+Shift+Esc force quits, Alt+F4 quits",
       "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "left_arrow", "modifiers": { "mandatory": ["command", "control"] } },
+          "to": [{ "key_code": "left_arrow", "modifiers": ["control"] }]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "right_arrow", "modifiers": { "mandatory": ["command", "control"] } },
+          "to": [{ "key_code": "right_arrow", "modifiers": ["control"] }]
+        },
         {
           "type": "basic",
           "from": { "key_code": "s", "modifiers": { "mandatory": ["control", "shift"] } },

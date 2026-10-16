@@ -18,7 +18,7 @@ handled per app, in code:
 | Layer | Config | Handles |
 |---|---|---|
 | Keyboard | `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json` | The table above, plus F1–F12 on both base layers |
-| Terminal | `home/.config/wezterm/wezterm.lua` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt |
+| Terminal | `home/.config/wezterm/wezterm.lua` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt, Alt keys passed to tmux |
 | macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked Karabiner |
 | VS Code | `platform/macos/vscode/keybindings.json` | Custom Ctrl bindings and terminal interrupt |
 
@@ -47,7 +47,9 @@ pass the EventViewer checks in step 5.
    without a password prompt (e.g. from an agent session). Open Karabiner
    (`open -a Karabiner-Elements`), approve the driver extension and Input
    Monitoring in System Settings, and restart if macOS asks. In the Keyboard
-   Setup Assistant choose **ANSI**.
+   Setup Assistant choose **ANSI**. In AltTab's settings, under **Controls**,
+   set the hold key to **⌥ Option** (its default is ⌘, which is the physical
+   Ctrl key here).
 3. **Link the config.** Run `bootstrap.sh` (or `platform/macos/install.sh` on a
    fresh machine). It links `~/.config/wezterm/wezterm.lua` and copies the rule
    file to `~/.config/karabiner/assets/complex_modifications/windows-parity.json`.
@@ -67,7 +69,8 @@ pass the EventViewer checks in step 5.
    the output: `Ctrl+Left` gives `Option+Left`, `Home` gives `Cmd+Left`,
    `Ctrl+Home` gives `Cmd+Up`, `Ctrl+Backspace` gives `Option+Delete`,
    `Ctrl+Y` gives `Cmd+Shift+Z`, `` Ctrl+` `` in VS Code gives `` Ctrl+` ``,
-   `Ctrl+Tab` in Chrome gives `Ctrl+Tab`, and `Alt+F4` gives `Cmd+Q`.
+   `Ctrl+Tab` in Chrome gives `Ctrl+Tab`, `Win+Ctrl+Left` gives `Ctrl+Left`,
+   and `Alt+F4` gives `Cmd+Q`.
    If `Home` jumps by word, the rule order is wrong: the word-jump manipulators
    must come before the `Home`/`End` ones, because `Home` outputs `Cmd+Left`.
 
@@ -121,11 +124,15 @@ don't collide.
 ## WezTerm and tmux
 
 From `wezterm.lua` and `.tmux.conf`. These are the same keys on both systems.
+The Alt keys act on WezTerm panes and tabs, or on tmux panes and windows when
+tmux is the foreground process (WezTerm passes them through). Not yet checked
+on Windows: if tmux runs inside WSL, WezTerm may see `wsl.exe` instead of tmux.
 
 | Action | Keys | Status |
 |---|---|---|
 | Split right / below | Alt+h / Alt+v | ✅ (needs Option as Alt, set in `wezterm.lua`) |
 | Close pane | Alt+w | ✅ |
+| New tab or window | Alt+t | ✅ |
 | Move between panes | Alt+←/→/↑/↓ | ✅ |
 | Previous / next tab or window | Alt+Shift+←/→ | ✅ |
 | Paste | Ctrl+V | ✅ (`Cmd+V` in macOS) |
@@ -137,7 +144,8 @@ From `wezterm.lua` and `.tmux.conf`. These are the same keys on both systems.
 
 | Action | Windows | macOS | Status |
 |---|---|---|---|
-| Switch apps | Alt+Tab | Option+Tab | ✅ (AltTab) |
+| Switch apps | Alt+Tab | Option+Tab | ✅ (AltTab, hold key set to Option) |
+| Previous / next desktop | Win+Ctrl+←/→ | Ctrl+←/→ | ✅ (Karabiner) |
 | Screenshot to clipboard | Win+Shift+S | Cmd+Ctrl+Shift+4 | ✅ (Karabiner) |
 | Task manager | Ctrl+Shift+Esc | Cmd+Option+Esc | ✅ (Karabiner, opens Force Quit) |
 | Clipboard history | Win+V | none built in | ➖ |
