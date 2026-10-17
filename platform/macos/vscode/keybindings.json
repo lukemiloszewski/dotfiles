@@ -29,5 +29,14 @@
     "command": "workbench.action.terminal.sendSequence",
     "args": { "text": "\u0003" },
     "when": "terminalFocus && !terminalTextSelected"
+  },
+  // Ctrl+L in the terminal: clear the screen (form feed), as on Windows.
+  // Physical Ctrl sends Cmd, and VS Code doesn't forward Cmd+L to the shell the
+  // way WezTerm/Ghostty do, so bind it here (mirrors the Cmd+C interrupt above).
+  {
+    "key": "cmd+l",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u000c" },
+    "when": "terminalFocus"
   }
 ]

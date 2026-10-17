@@ -116,6 +116,7 @@ don't collide.
 | Toggle terminal | Ctrl+` | Ctrl+` | ✅ (Karabiner: Cmd+` becomes Ctrl+` in VS Code) |
 | Focus terminal / editor | Ctrl+K / Ctrl+J | Cmd+K / Cmd+J | ✅ (`platform/macos/vscode/keybindings.json`) |
 | Interrupt in terminal | Ctrl+C | Cmd+C | ✅ (`keybindings.json`: sends `^C` when nothing is selected) |
+| Clear terminal | Ctrl+L | Cmd+L | ✅ (`keybindings.json`: sends `^L` when the terminal is focused) |
 | Go to definition | F12 | F12 | ✅ (F-keys on the top row) |
 
 ## WezTerm, Ghostty and tmux
