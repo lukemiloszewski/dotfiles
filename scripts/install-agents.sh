@@ -7,3 +7,6 @@ command -v claude >/dev/null 2>&1 || \
 
 command -v roborev >/dev/null 2>&1 || \
   curl -fsSL https://roborev.io/install.sh | bash
+
+command -v entire >/dev/null 2>&1 || \
+  curl -fsSL https://entire.io/install.sh | bash
