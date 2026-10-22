@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/scripts/statusline.sh --detail full --color-usage all --cost"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "bash ~/.claude/hooks/git-guard.sh" },
+          { "type": "command", "command": "bash ~/.claude/hooks/bash-guard.sh" }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          { "type": "command", "command": "bash ~/.claude/hooks/file-guard.sh" }
+        ]
+      }
+    ]
+  },
+  "effortLevel": "medium",
+  "tui": "fullscreen",
+  "theme": "dark",
+  "extraKnownMarketplaces": {
+    "hamelsmu-evals-skills": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/hamelsmu/evals-skills.git"
+      }
+    },
+    "dotfiles": {
+      "source": {
+        "source": "github",
+        "repo": "lukemiloszewski/dotfiles"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "evals-skills@hamelsmu-evals-skills": true
+  }
+}
