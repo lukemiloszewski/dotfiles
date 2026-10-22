@@ -61,6 +61,21 @@ if it exists and is ignored by git:
 | `~/.zshrc.local` | Exports, aliases and `PATH`. Loaded before tools such as nvm initialise, so environment variables set there apply to them. |
 | `~/.tmux.conf.local` | Extra tmux bindings. |
 
+## Claude Code
+
+User-level config, so it applies in every repo and every git worktree (project
+`.claude/` files are gitignored and absent from a fresh worktree unless the repo
+lists them in `.worktreeinclude`).
+
+| Path | Contents |
+|---|---|
+| `home/.claude/scripts/statusline.sh` | Status line: directory, branch, model, lines changed, cost. Linked. |
+| `home/.claude/hooks/` | `git-guard.sh` and `bash-guard.sh` block destructive git and shell commands; `file-guard.sh` blocks writes to system, credential and shell config paths. Linked. If `file-guard.sh` proves too restrictive, drop its entry from the seed. |
+| `seed/.claude/settings.json` | Wires the status line and the three guards, plus mode, effort, theme and public plugin marketplaces. Copied once, because Claude Code rewrites `~/.claude/settings.json`. |
+
+An existing `~/.claude/settings.json` is never overwritten; merge by hand. Anything
+employer-specific (private marketplaces, plugins) belongs in the work overlay, not here.
+
 ## lmux
 
 Lets an agent read, type into, and spawn tmux panes, so several agents can work
