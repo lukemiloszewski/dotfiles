@@ -113,3 +113,10 @@ The plugin gives an agent the instructions, not the tool; `bootstrap.sh` puts
 and is copied once, because roborev rewrites the file itself and a symlink would
 write straight back into this repo. The file can take an API key, so keep it out
 of version control: edit `~/.roborev/config.toml`, not the seed.
+
+## Entire
+
+`scripts/install-agents.sh` installs the [Entire CLI](https://github.com/entireio/cli).
+`.zshrc` loads its completion when `entire` is on `PATH`. Hooks and settings are
+per repo (`entire enable`, which writes `.entire/` and the `entire hooks` entries
+in `.claude/settings.json`), so nothing is seeded here.
