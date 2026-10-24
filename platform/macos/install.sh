@@ -26,3 +26,8 @@ bash "${REPO_DIR}/scripts/install.sh"
 # zsh-shift-select plugin
 dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-shift-select"
 [ -d "${dir}" ] || git clone --depth 1 https://github.com/jirutka/zsh-shift-select.git "${dir}"
+
+# keyboard layout: U.S. to match the ANSI keyboard (British types £ on Shift+3)
+us_layout='<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>0</integer><key>KeyboardLayout Name</key><string>U.S.</string></dict>'
+defaults write com.apple.HIToolbox AppleEnabledInputSources -array "${us_layout}"
+defaults write com.apple.HIToolbox AppleSelectedInputSources -array "${us_layout}"
