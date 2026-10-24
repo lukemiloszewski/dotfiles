@@ -30,6 +30,7 @@ brew install tmux
 brew install git-delta
 brew install ollama
 brew install opencode
+brew install pi-coding-agent
 brew install bun
 brew install gh
 
