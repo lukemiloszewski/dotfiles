@@ -37,6 +37,7 @@ brew install gh
 # --- Cask ---
 
 brew install --cask 1password
+brew install --cask 1password-cli
 brew install --cask docker
 brew install --cask google-chrome
 brew install --cask itsycal
