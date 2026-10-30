@@ -33,6 +33,7 @@ brew install opencode
 brew install pi-coding-agent
 brew install bun
 brew install gh
+brew install herdr
 
 # --- Cask ---
 
@@ -56,6 +57,7 @@ brew install --cask iterm2
 brew install --cask claude-code
 brew install --cask claude
 brew install --cask codex
+brew install --cask cmux
 
 # --- Setup ---
 
