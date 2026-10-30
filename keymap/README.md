@@ -18,7 +18,7 @@ handled per app, in code:
 | Layer | Config | Handles |
 |---|---|---|
 | Keyboard | `keyboards/nuphy-air75-v2/nuphy_air75_v2.layout.json` | The table above, plus F1–F12 on both base layers |
-| Terminal | `home/.config/wezterm/wezterm.lua`, `home/.config/ghostty/config.ghostty` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt, Alt keys passed to tmux |
+| Terminal | `home/.config/wezterm/wezterm.lua`, `home/.config/ghostty/config.ghostty`, `home/.config/herdr-app/keys.json` | `Cmd+<letter>` → `Ctrl+<letter>`, Option as Alt, Alt keys passed to tmux |
 | macOS leftovers | `seed/.config/karabiner/assets/complex_modifications/windows-parity.json` | Rows marked Karabiner |
 | VS Code | `platform/macos/vscode/keybindings.json` | Custom Ctrl bindings and terminal interrupt |
 
@@ -140,6 +140,31 @@ on Windows: if tmux runs inside WSL, WezTerm may see `wsl.exe` instead of tmux.
 | Copy | Ctrl+Shift+C | ✅ (`Cmd+Shift+C` in macOS) |
 | Interrupt, clear, history search, line start/end | Ctrl+C / L / R / A / E | ✅ (`Cmd+<letter>` forwarded as Ctrl) |
 | Shift+arrows, Home/End, word delete in zsh | per `.zshrc` | ✅ (bindings load after oh-my-zsh) |
+
+## Herdr
+
+From `home/.config/herdr-app/keys.json`, which replaces Herdr's defaults. The
+WezTerm and tmux keys above work the same way: the Alt keys act on Herdr's
+panes and tabs, and `Cmd+<letter>` is sent to the program as `Ctrl+<letter>`.
+Herdr's defaults used `Cmd+D`/`W`/`T`/`N`/`P`/`B` (physical Ctrl), which would
+take EOF and other shell keys away. Set `"option_as_alt": "on"` in
+`~/.config/herdr-app/settings.json`. Herdr writes that file itself, so it is
+not linked from here. Karabiner treats Herdr like WezTerm and Ghostty.
+`Ctrl+Alt+Shift+Esc` sets `keys.json` aside and restores the defaults.
+
+| Action | Keys | Status |
+|---|---|---|
+| Split right / below, close pane, new tab | Alt+h / v / w / t | |
+| Move between panes | Alt+←/→/↑/↓ | |
+| Previous / next tab | Alt+Shift+←/→, Ctrl+Tab / Ctrl+Shift+Tab | |
+| Previous / next space | Alt+Shift+↑/↓ | |
+| Previous / next agent | Alt+[ / ] | |
+| New space, zoom pane | Alt+n / Alt+z | |
+| Tab 1–9 / space 1–9 | Ctrl+1–9 / Win+1–9 | |
+| Command palette, picker, sidebar | Ctrl+Shift+P / O / B | |
+| Copy / paste | Ctrl+Shift+C / Ctrl+V | |
+| Word jump | Ctrl+←/→ | |
+| Quit | Alt+F4 (Karabiner sends `Cmd+Q`, kept as quit) | |
 
 ## OS
 
