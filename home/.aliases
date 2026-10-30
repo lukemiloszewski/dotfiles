@@ -24,6 +24,19 @@ alias reload="exec ${SHELL} -l"
 
 alias loadenv='[ -f .env ] && set -a && source ./.env && set +a && echo "=> Loaded $(grep -cv "^\s*\(#\|$\)" .env) vars from .env" || echo "=> No .env in $(pwd)"'
 
+# Resolve the 1Password references in ~/.config/secrets/.env.op into
+# ~/.config/secrets/.env (mode 600) and load them here; new shells load the
+# file from .zshrc. Run after adding or rotating a secret.
+secrets-refresh() {
+	local dir="$HOME/.config/secrets"
+	chmod 700 "$dir" || return
+	op inject -f -i "$dir/.env.op" -o "$dir/.env" >/dev/null || return
+	# Keep the plaintext out of Time Machine; excluding the folder survives rewrites
+	[[ "$OSTYPE" == darwin* ]] && tmutil addexclusion "$dir" 2>/dev/null
+	set -a && source "$dir/.env" && set +a
+	echo "=> Loaded $(grep -cv "^\s*\(#\|$\)" "$dir/.env") secrets into ~/.config/secrets/.env"
+}
+
 # --- Networking ---
 
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"

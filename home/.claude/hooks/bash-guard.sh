@@ -33,6 +33,12 @@ if echo "$CMD_LOWER" | grep -qE '(cat|less|head|tail|read|cp|mv|scp).*(/\.ssh/|/
     exit 2
 fi
 
+# Any command naming the secrets written by secrets-refresh (not the .env.op references)
+if echo "$CMD_LOWER" | grep -qE 'secrets/\.env([^.a-z0-9_]|$)'; then
+    echo "BLOCKED: Accessing ~/.config/secrets/.env - use ! to override" >&2
+    exit 2
+fi
+
 # 4. System modification
 if echo "$CMD_LOWER" | grep -qE '(chown|chmod)\s+.*(/etc|/usr|/bin|/var)'; then
     echo "BLOCKED: System file permission changes - use ! to override" >&2

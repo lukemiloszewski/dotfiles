@@ -3,4 +3,7 @@ home/.gitconfig.local
 
 # Local overrides: never tracked, so work or machine-specific values stay out
 *.local
+
+# Resolved secrets, written by secrets-refresh; only the .env.op references are tracked
+home/.config/secrets/.env
 /.claude/

@@ -9,6 +9,15 @@ for file ($files); do
 done
 unset file
 
+# --- Secrets ---
+
+# Written from 1Password by secrets-refresh (.aliases)
+if [[ -r "$HOME/.config/secrets/.env" ]]; then
+	set -a && source "$HOME/.config/secrets/.env" && set +a
+elif [[ -f "$HOME/.config/secrets/.env.op" ]]; then
+	echo "=> No ~/.config/secrets/.env yet: run secrets-refresh"
+fi
+
 # --- zsh ---
 
 plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)

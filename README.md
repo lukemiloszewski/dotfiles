@@ -61,6 +61,21 @@ if it exists and is ignored by git:
 | `~/.zshrc.local` | Exports, aliases and `PATH`. Loaded before tools such as nvm initialise, so environment variables set there apply to them. |
 | `~/.tmux.conf.local` | Extra tmux bindings. |
 
+## Secrets
+
+API keys and tokens live in 1Password. `home/.config/secrets/.env.op` lists every one as a
+reference (`NAME='{{ op://<vault>/<item>/<field> }}'`) and holds no values.
+
+| Path | Contents |
+|---|---|
+| `~/.config/secrets/.env.op` | The references. Linked. |
+| `~/.config/secrets/.env` | The values, written by `secrets-refresh` (`.aliases`) with mode 600. Untracked, excluded from Time Machine, and blocked for agents by the Claude guards. |
+
+`secrets-refresh` asks for Touch ID once, then every new shell loads
+`~/.config/secrets/.env` from `.zshrc`, so agents and unattended runs need no 1Password
+prompt. Run it again after adding or rotating a secret. Each repo commits a
+`.env.example` naming the variables it reads, with empty values.
+
 ## Claude Code
 
 User-level config, so it applies in every repo and every git worktree (project

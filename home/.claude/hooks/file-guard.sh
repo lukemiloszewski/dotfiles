@@ -14,6 +14,18 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // ""' 2>/dev/null)
 # Normalize path
 PATH_LOWER=$(echo "$FILE_PATH" | tr '[:upper:]' '[:lower:]')
 
+# === READS ===
+
+# Only the secrets written by secrets-refresh are off limits; every other
+# rule below is about writes.
+if [[ "$TOOL_NAME" == "Read" ]]; then
+    if [[ "$FILE_PATH" == "$HOME/.config/secrets/.env" || "$FILE_PATH" == "~/.config/secrets/.env" ]]; then
+        echo "BLOCKED: Cannot read secrets file: $FILE_PATH - use ! to override" >&2
+        exit 2
+    fi
+    exit 0
+fi
+
 # === BLOCKED PATHS ===
 
 # 1. System directories
