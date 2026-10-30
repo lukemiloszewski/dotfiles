@@ -14,7 +14,7 @@ snippets).
 | `platform/linux/` | `dnf.sh`, `apt.sh` (root), `install-tmux.sh` (tmux 3.x from source). |
 | `platform/macos/` | `install.sh`, `brew.sh`, `vscode/keybindings.json` (linked into VS Code's user folder). |
 | `platform/windows/` | `bootstrap.ps1`, `profile.ps1`. |
-| `scripts/` | `install.sh` (user tooling), `install-agents.sh`, `ssh.sh`. |
+| `scripts/` | `install.sh` (user tooling), `install-agents.sh`, `ssh.sh`, `test-guards.sh` (checks the Claude guard hooks). |
 | `espanso/` | Text snippets, linked on macOS and Windows. |
 | `keyboards/` | VIA definition and saved keymap for the NuPhy Air75 V2. Not linked. |
 | `keymap/` | Shortcut inventory and the Windows-parity model for macOS. |
@@ -85,7 +85,7 @@ lists them in `.worktreeinclude`).
 | Path | Contents |
 |---|---|
 | `home/.claude/scripts/statusline.sh` | Status line: directory, branch, model, lines changed, cost. Linked. |
-| `home/.claude/hooks/` | `git-guard.sh` and `bash-guard.sh` block destructive git and shell commands; `file-guard.sh` blocks writes to system, credential and shell config paths. Linked. If `file-guard.sh` proves too restrictive, drop its entry from the seed. |
+| `home/.claude/hooks/` | `git-guard.sh` and `bash-guard.sh` block destructive git and shell commands; `file-guard.sh` blocks writes to system, credential and shell config paths. Linked. If `file-guard.sh` proves too restrictive, drop its entry from the seed. After editing a guard, run `scripts/test-guards.sh`. |
 | `seed/.claude/settings.json` | Wires the status line and the three guards, plus mode, effort, theme and public plugin marketplaces. Copied once, because Claude Code rewrites `~/.claude/settings.json`. |
 
 An existing `~/.claude/settings.json` is never overwritten; merge by hand. Anything

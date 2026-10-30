@@ -13,10 +13,17 @@ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null)
 # Normalize: lowercase, collapse whitespace
 CMD_LOWER=$(echo "$COMMAND" | tr '[:upper:]' '[:lower:]' | tr -s ' ')
 
+# One simple command per line, so a rule can't pair a verb in one command
+# with a path in another (`mv a b && ls .env.op`)
+SEGMENTS=$(printf '%s\n' "$CMD_LOWER" | awk '{ gsub(/&&|\|\||;|\|/, "\n"); print }')
+
 # === BLOCKED PATTERNS ===
 
-# 1. Destructive recursive operations on root or home
-if echo "$CMD_LOWER" | grep -qE 'rm\s+-[rf]*\s+(/|~|\$home|/users|/home|/var|/etc|/usr|/bin|/sbin)'; then
+# 1. Recursive or forced rm whose target is root, a home folder or a top-level
+# system folder itself; paths inside them (rm -r ~/.cache/x) are allowed
+Q='["'"'"']?'
+RM_TARGET='(/|~|\$home|\$\{home\}|/users(/[^/ ]+)?|/home(/[^/ ]+)?|/var|/etc|/usr|/bin|/sbin|/system|/library|/applications)'
+if echo "$SEGMENTS" | grep -qE '(^|\s)rm\s+(-[a-z-]*\s+)*-[a-z]*[rf][a-z]*\s+(-[a-z-]*\s+)*'"$Q$RM_TARGET"'/?\*?'"$Q"'(\s|$)'; then
     echo "BLOCKED: Destructive operation on system directory - use ! to override" >&2
     exit 2
 fi
@@ -27,8 +34,10 @@ if echo "$CMD_LOWER" | grep -qE '^\s*sudo\s'; then
     exit 2
 fi
 
-# 3. Credential/secret file access
-if echo "$CMD_LOWER" | grep -qE '(cat|less|head|tail|read|cp|mv|scp).*(/\.ssh/|/\.aws/|/\.gnupg/|/\.netrc|credentials|\.env\b|secrets?\.)'; then
+# 3. Credential/secret file access, checked per command. Templates
+# (.env.example and similar, .env.op references) hold no secrets.
+CRED_SEGMENTS=$(echo "$SEGMENTS" | sed -E 's/\.env\.(op|example|sample|template)([^a-z0-9_]|$)/\2/g')
+if echo "$CRED_SEGMENTS" | grep -qE '(^|[^a-z0-9_.-])(cat|less|more|head|tail|read|cp|mv|scp|grep|rg|sed|awk|source|bat|xxd|strings)\s.*(/\.ssh/|/\.aws/|/\.gnupg/|/\.netrc|credentials|\.env([^a-z0-9_]|$)|secrets?\.)'; then
     echo "BLOCKED: Accessing credential/secret files - use ! to override" >&2
     exit 2
 fi
