@@ -84,6 +84,26 @@ write_git_identity() {
   } > "${dst}"
 }
 
+# Skills live once, in ~/.agents/skills (home/.agents/skills here), which pi
+# and other agents read. Claude Code reads only ~/.claude/skills, so give it a
+# link per skill. A real folder of the same name there is left alone.
+link_agent_skills() {
+  local src_root="${HOME}/.agents/skills" dst_root="${HOME}/.claude/skills" src dst linked=0
+  [[ -d "${src_root}" ]] || return 0
+  mkdir -p "${dst_root}"
+  for src in "${src_root}"/*/; do
+    src="${src%/}"
+    dst="${dst_root}/$(basename "${src}")"
+    if [[ -e "${dst}" && ! -L "${dst}" ]]; then
+      warn "  ~/.claude/skills/$(basename "${src}") is a real folder — not linked"
+      continue
+    fi
+    ln -sfn "${src}" "${dst}"
+    linked=$((linked + 1))
+  done
+  info "Linked ${linked} skills into ${dst_root}"
+}
+
 check_tooling() {
   local missing=() tool
   for tool in tmux git zsh delta starship uv; do
@@ -105,6 +125,7 @@ main() {
     link_tree "${REPO_DIR}/espanso" "${HOME}/Library/Application Support/espanso"
     link_tree "${REPO_DIR}/platform/macos/vscode" "${HOME}/Library/Application Support/Code/User"
   fi
+  link_agent_skills
   seed_home
   write_git_identity
   check_tooling
