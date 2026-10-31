@@ -91,6 +91,19 @@ lists them in `.worktreeinclude`).
 An existing `~/.claude/settings.json` is never overwritten; merge by hand. Anything
 employer-specific (private marketplaces, plugins) belongs in the work overlay, not here.
 
+## Agents
+
+Skills and MCP servers are kept once, under `home/.agents`, for every agent (Claude Code, pi,
+Codex, ...). `bootstrap.sh` points each agent at them, so nothing is duplicated per agent.
+
+| Path | Contents |
+|---|---|
+| `home/.agents/skills/<name>/` | Skills. Linked to `~/.agents/skills`, which pi and other agents read; Claude Code gets a link per skill in `~/.claude/skills`. |
+| `home/.agents/mcp.json` | MCP servers, in the common `mcpServers` format (`${HOME}` for the home folder). Linked to `~/.agents/mcp.json`, for any agent or `--mcp-config` flag to read; bootstrap also registers each server with Claude Code (user scope) and Codex, when installed. |
+
+To add a server, declare it in `mcp.json` and re-run `./bootstrap.sh`. To add a skill, add its
+folder and re-run.
+
 ## lmux
 
 Lets an agent read, type into, and spawn tmux panes, so several agents can work

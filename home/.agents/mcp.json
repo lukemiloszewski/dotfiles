@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "memex": {
+      "command": "uv",
+      "args": ["run", "--directory", "${HOME}/code/memex", "memex-mcp"]
+    }
+  }
+}

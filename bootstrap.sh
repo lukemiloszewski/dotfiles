@@ -104,6 +104,39 @@ link_agent_skills() {
   info "Linked ${linked} skills into ${dst_root}"
 }
 
+# MCP servers are declared once, in ~/.agents/mcp.json (home/.agents/mcp.json
+# here, in the common `mcpServers` format, with ${HOME} for the home folder).
+# Each agent that keeps servers in its own config gets every one registered
+# there, replacing an older registration of the same name. Agents without MCP
+# use the skills, which also describe a command line fallback.
+register_agent_mcp() {
+  local config="${HOME}/.agents/mcp.json" name server word registered=0
+  local -a argv
+  [[ -f "${config}" ]] || return 0
+  if ! command -v jq >/dev/null 2>&1; then
+    warn "jq not installed — MCP servers in ~/.agents/mcp.json not registered"
+    return 0
+  fi
+  while IFS= read -r name; do
+    server="$(jq -c --arg name "${name}" --arg home "${HOME}" \
+      '.mcpServers[$name] | walk(if type == "string" then gsub("\\$\\{HOME\\}"; $home) else . end)' \
+      "${config}")"
+    if command -v claude >/dev/null 2>&1; then
+      claude mcp remove --scope user "${name}" >/dev/null 2>&1 || true
+      claude mcp add-json --scope user "${name}" "${server}" >/dev/null
+    fi
+    if command -v codex >/dev/null 2>&1; then
+      argv=()
+      while IFS= read -r word; do argv+=("${word}"); done \
+        < <(jq -r '[.command] + (.args // []) | .[]' <<< "${server}")
+      codex mcp remove "${name}" >/dev/null 2>&1 || true
+      codex mcp add "${name}" -- "${argv[@]}" >/dev/null
+    fi
+    registered=$((registered + 1))
+  done < <(jq -r '.mcpServers | keys[]' "${config}")
+  info "Registered ${registered} MCP servers from ~/.agents/mcp.json"
+}
+
 check_tooling() {
   local missing=() tool
   for tool in tmux git zsh delta starship uv; do
@@ -126,6 +159,7 @@ main() {
     link_tree "${REPO_DIR}/platform/macos/vscode" "${HOME}/Library/Application Support/Code/User"
   fi
   link_agent_skills
+  register_agent_mcp
   seed_home
   write_git_identity
   check_tooling
