@@ -143,9 +143,17 @@ on Windows: if tmux runs inside WSL, WezTerm may see `wsl.exe` instead of tmux.
 
 ## Herdr
 
-From `home/.config/herdr-app/keys.json`, which replaces Herdr's defaults. The
-WezTerm and tmux keys above work the same way: the Alt keys act on Herdr's
-panes and tabs, and `Cmd+<letter>` is sent to the program as `Ctrl+<letter>`.
+From `home/.config/herdr-app/keys.json` (macOS) or
+`platform/windows/herdr/keys.json` (Windows), which replace Herdr's defaults.
+The macOS file is `cmd-*` shaped and depends on the firmware/Karabiner swap;
+Windows gets its own variant because there is no swap there, so app actions
+sit on `Ctrl+Shift` and the native terminal keys are kept. `bootstrap.sh`
+links the macOS file; `platform/windows/bootstrap.ps1` links the Windows one
+(both to `~/.config/herdr-app/keys.json`). Herdr keeps an edited keys file as
+the user's, so the link is not overwritten on upgrade. The tmux-style Alt
+bindings are identical on both: the Alt keys act on Herdr's panes and tabs.
+On Windows, spaces are on `Alt+1–9` (the Win key is OS-reserved there), and
+`Ctrl+V` pastes while `Ctrl+C` stays with the program for interrupt.
 Herdr's defaults used `Cmd+D`/`W`/`T`/`N`/`P`/`B` (physical Ctrl), which would
 take EOF and other shell keys away. Set `"option_as_alt": "on"` in
 `~/.config/herdr-app/settings.json`. Herdr writes that file itself, so it is

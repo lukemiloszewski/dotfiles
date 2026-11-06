@@ -25,6 +25,11 @@ function Install-File($Source, $Target) {
 Install-File "$Repo\platform\windows\profile.ps1" $PROFILE.CurrentUserAllHosts
 Install-File "$Repo\home\.config\starship.toml" "$HOME\.config\starship.toml"
 Install-File "$Repo\home\.config\wezterm\wezterm.lua" "$HOME\.config\wezterm\wezterm.lua"
+# Herdr keys: the home/ copy is macOS-shaped (cmd-*, needs Karabiner). Windows
+# gets its own variant: tmux-style Alt bindings, Ctrl+Shift for app actions,
+# Windows-native terminal keys. Herdr keeps an edited keys.json as the user's,
+# so a link here is not clobbered on upgrade.
+Install-File "$Repo\platform\windows\herdr\keys.json" "$HOME\.config\herdr-app\keys.json"
 
 Get-ChildItem -Recurse -File "$Repo\espanso" | ForEach-Object {
   $Rel = $_.FullName.Substring("$Repo\espanso".Length)
